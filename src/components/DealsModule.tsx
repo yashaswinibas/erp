@@ -62,7 +62,7 @@ function useDealsState(initialTab: DealsTab) {
   const app = useApp();
   const { quotations, agreements, clients, projects, employees, invoices, company, currentUser, currentRole,
     updateQuotation, updateAgreement, addAgreement, addProject, addTask, addInvoice, addPayment, notify, logAudit } = app;
-  const isFinance = ['super_admin', 'admin'].includes(currentRole);
+  const isFinance = ['super_admin', 'admin', 'manager'].includes(currentRole); // AGENCYOS_V2_PART20
   const canManage = ['super_admin', 'admin', 'manager', 'project_manager', 'hr'].includes(currentRole);
   const today = localDate();
 

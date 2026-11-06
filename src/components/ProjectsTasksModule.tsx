@@ -1,3 +1,4 @@
+import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { TaskEditModal } from './QuickEditModals'; // AGENCYOS_V2_UI
@@ -44,11 +45,11 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
     clients,
     currentUser,
     currentRole
-  } = useApp();
+  } = scopeForStaff(useApp());
   const [editTask, setEditTask] = useState<Task | null>(null);
   const canManageTasks = currentRole !== 'employee';
 
-  const [activeTab, setActiveTab] = useState<'task_operations' | 'my_tasks' | 'projects'>(initialViewMode);
+  const [activeTab, setActiveTab] = useState<'task_operations' | 'my_tasks' | 'projects'>(currentRole === 'employee' && initialViewMode === 'task_operations' ? 'my_tasks' : initialViewMode);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProjectFilter, setSelectedProjectFilter] = useState('all');
   const [selectedPriorityFilter, setSelectedPriorityFilter] = useState('all');
@@ -56,7 +57,7 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
   const [myTasksStatusFilter, setMyTasksStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    setActiveTab(initialViewMode);
+    setActiveTab(currentRole === 'employee' && initialViewMode === 'task_operations' ? 'my_tasks' : initialViewMode);
   }, [initialViewMode]);
 
   const getEmployee = (empId: string) => employees.find(e => e.id === empId);
@@ -130,6 +131,7 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
               My Tasks ({myTasksList.length})
             </button>
             <button
+              hidden={currentRole === 'employee'}
               onClick={() => setActiveTab('task_operations')}
               className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
                 activeTab === 'task_operations'
@@ -147,11 +149,12 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Projects ({projects.length})
+              {currentRole === 'employee' ? 'My Projects' : 'Projects'} ({projects.length})
             </button>
           </div>
 
           <button
+            hidden={currentRole === 'employee'}
             onClick={onOpenAddTaskModal}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-xs cursor-pointer"
           >
@@ -159,6 +162,7 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
             <span>+ Add Task</span>
           </button>
           <button
+            hidden={currentRole === 'employee'}
             onClick={onOpenAddProjectModal}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 dark:bg-slate-800 text-white border border-slate-700 hover:bg-slate-800 cursor-pointer"
           >

@@ -1,3 +1,4 @@
+import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ClientEditModal } from './QuickEditModals'; // AGENCYOS_V2_UI
@@ -46,13 +47,13 @@ export const CrmModule: React.FC<CrmProps> = ({
     invoices,
     fieldVisits,
     openDocument
-  } = useApp();
+  } = scopeForStaff(useApp());
 
   const [activeSubTab, setActiveSubTab] = useState<'leads' | 'clients'>(initialSubTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [editClient, setEditClient] = useState<Client | null>(null);
-  const { clients: allClients } = useApp();
+  const { clients: allClients } = scopeForStaff(useApp());
   // keep the open profile in sync after edits
   useEffect(() => { if (selectedClient) { const c = allClients.find(x => x.id === selectedClient.id); if (c && c !== selectedClient) setSelectedClient(c); } }, [allClients]);
   const [clientProfileTab, setClientProfileTab] = useState<string>('overview');

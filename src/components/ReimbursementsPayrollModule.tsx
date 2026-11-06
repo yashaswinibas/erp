@@ -1,4 +1,6 @@
 import { FinanceLinkBar } from './FinanceLinkBar'; // AGENCYOS_V2_PART16
+import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
+import { canAccess } from '../lib/rbac';
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ProofThumbs } from './ProofThumbs'; // AGENCYOS_V2_PART12
@@ -38,7 +40,7 @@ export const ReimbursementsPayrollModule: React.FC<{
     payslips,
     generatePayslipForEmployee,
     openDocument
-  } = useApp();
+  } = scopeForStaff(useApp());
 
   const [activeSubTab, setActiveSubTab] = useState<'reimbursements' | 'payroll'>('reimbursements');
   const [searchQuery, setSearchQuery] = useState('');
@@ -50,7 +52,7 @@ export const ReimbursementsPayrollModule: React.FC<{
   const [actionType, setActionType] = useState<'reject' | 'pay' | null>(null);
   const [actionRemarks, setActionRemarks] = useState('');
 
-  const canApprove = currentRole === 'super_admin' || currentRole === 'admin' || currentRole === 'hr' || currentRole === 'manager';
+  const canApprove = canAccess(currentRole, 'approve_claims'); // AGENCYOS_V2_PART23: switch ON / OFF in Permission matrix
 
   const getEmployee = (empId: string) => employees.find(e => e.id === empId);
 
@@ -158,6 +160,7 @@ export const ReimbursementsPayrollModule: React.FC<{
               Reimbursements ({reimbursements.length})
             </button>
             <button
+              hidden={currentRole === 'employee'}
               onClick={() => setActiveSubTab('payroll')}
               className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
                 activeSubTab === 'payroll'

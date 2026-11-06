@@ -1,3 +1,4 @@
+import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import React, { useState, useEffect } from 'react';
 import { useApp, parseTimeToMinutes, calculateTimeDiffHours } from '../context/AppContext';
 import {
@@ -70,7 +71,7 @@ export const RoleDashboardView: React.FC<RoleDashboardProps> = ({ onOpenAddModal
     activeFieldVisit,
     setActiveTab,
     openDocument
-  } = useApp();
+  } = scopeForStaff(useApp());
 
   // Selected sub-view inside dashboard (allows owner to inspect other desks without switching persona)
   const defaultSubView = forcedDesk || (
@@ -108,7 +109,7 @@ export const RoleDashboardView: React.FC<RoleDashboardProps> = ({ onOpenAddModal
   const totalBilled = invoices.reduce((s, i) => s + i.totalAmount, 0);
 
   // Net Operating Margin: ₹1,39,001 (Exp: ₹1,67,499)
-  const { expenses: allExpenses = [] } = useApp();
+  const { expenses: allExpenses = [] } = scopeForStaff(useApp());
   const totalExpenses = allExpenses.reduce((s, e) => s + (e.amount || 0), 0);
   const netMargin = totalReceived - totalExpenses; // ₹1,39,001
 
@@ -123,6 +124,15 @@ export const RoleDashboardView: React.FC<RoleDashboardProps> = ({ onOpenAddModal
 
   // HR metrics
   const todayStr = new Date().toISOString().split('T')[0];
+  // real personal figures (AGENCYOS_V2_PART19)
+  const myLb = leaveBalances.find((b) => b.employeeId === currentUser.id);
+  const myCl = myLb ? myLb.casualLeaveTotal - myLb.casualLeaveUsed : 0, mySl = myLb ? myLb.sickLeaveTotal - myLb.sickLeaveUsed : 0, myPl = myLb ? myLb.privilegeLeaveTotal - myLb.privilegeLeaveUsed : 0;
+  const myClaimsOpen = reimbursements.filter((r) => r.employeeId === currentUser.id && ['submitted', 'under_review', 'approved'].includes(r.status));
+  const myClaimsOpenSum = myClaimsOpen.reduce((s, r) => s + r.amount, 0);
+  const monthKey = todayStr.slice(0, 7);
+  const monthVisits = fieldVisits.filter((v) => (v.date || '').startsWith(monthKey));
+  const fieldClaims = reimbursements.filter((r) => (r.date || '').startsWith(monthKey) && r.status !== 'rejected' && (r.fieldVisitId || ['Travel', 'Fuel', 'Transportation', 'Client Meeting'].includes(r.category)));
+  const fieldClaimsSum = fieldClaims.reduce((s, r) => s + r.amount, 0);
   const todayRecords = attendance.filter(a => a.date === todayStr);
   const presentCount = todayRecords.filter(a => a.checkIn && a.status !== 'leave' && a.status !== 'absent').length;
   const pendingLeaves = leaveRequests.filter(l => l.status === 'pending');
@@ -991,31 +1001,31 @@ export const RoleDashboardView: React.FC<RoleDashboardProps> = ({ onOpenAddModal
               <div className="mt-2 text-2xl font-extrabold font-mono text-slate-900 dark:text-white">
                 {fieldVisits.filter(v => v.date === todayStr).length} Visits
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Brigade Tech Ventures logged</p>
+              <p className="text-[11px] text-slate-500 mt-1">{fieldVisits.filter(v => v.date === todayStr).map(v => v.companyName).slice(0, 2).join(', ') || 'No visits logged today'}</p>
             </div>
 
             <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Distance Covered</span>
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Visits This Month</span>
               <div className="mt-2 text-2xl font-extrabold font-mono text-blue-600">
-                38.4 KM
+                {monthVisits.length} Visits
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Bangalore ORR & Gateway</p>
+              <p className="text-[11px] text-slate-500 mt-1">{monthVisits.filter(v => v.endTime).length} completed</p>
             </div>
 
             <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
               <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Field Claims Submitted</span>
               <div className="mt-2 text-2xl font-extrabold font-mono text-emerald-600">
-                ₹1,450
+                {inrShort(fieldClaimsSum)}
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Fuel & hospitality reimbursement</p>
+              <p className="text-[11px] text-slate-500 mt-1">{fieldClaims.length} claim(s) this month</p>
             </div>
 
             <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">Pipeline Leads Met</span>
+              <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">{currentRole === 'employee' ? 'My Leads' : 'Pipeline Leads'}</span>
               <div className="mt-2 text-2xl font-extrabold font-mono text-purple-600">
                 {leads.length} Accounts
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Prestige Estates proposal</p>
+              <p className="text-[11px] text-slate-500 mt-1">{leads.filter(l => l.status !== 'won' && l.status !== 'lost').length} open in pipeline</p>
             </div>
           </div>
 
@@ -1108,17 +1118,17 @@ export const RoleDashboardView: React.FC<RoleDashboardProps> = ({ onOpenAddModal
             <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
               <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">Casual Leaves Avail</span>
               <div className="mt-2 text-2xl font-extrabold font-mono text-purple-600">
-                11 / 12 Days
+                {myCl} Days
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">8 Sick · 14 Privilege</p>
+              <p className="text-[11px] text-slate-500 mt-1">{mySl} Sick · {myPl} Privilege left</p>
             </div>
 
             <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
               <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Reimbursements</span>
               <div className="mt-2 text-2xl font-extrabold font-mono text-amber-600">
-                ₹0 Pending
+                {inrShort(myClaimsOpenSum)} Pending
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">All claims settled</p>
+              <p className="text-[11px] text-slate-500 mt-1">{myClaimsOpen.length ? `${myClaimsOpen.length} claim(s) awaiting payment` : 'All claims settled'}</p>
             </div>
           </div>
 

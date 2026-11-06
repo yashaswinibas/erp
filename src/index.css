@@ -53,3 +53,6 @@
 /* AGENCYOS_V2_PART17: official letterhead page (screen + print) */
 .lh-page{background:#fff url('/letterhead.webp') repeat-y top center/100% auto;aspect-ratio:210/297;padding:22% 8.6% 16.5%;color:#0f172a;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media print{.print-page.lh-page{padding:22% 8.6% 16.5% !important}@page{size:A4;margin:0}}
+
+/* AGENCYOS_V2_PART20: hide sidebar section headings that have no screens for this login */
+aside div.space-y-1:has(> div.pl-1):not(:has(> div.pl-1 > button:not([hidden]))) { display: none; }

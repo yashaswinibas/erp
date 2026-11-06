@@ -1,14 +1,15 @@
 ﻿// Login page: choose role, then sign in. Each role has its own login and dashboard.
 import React, { useState } from 'react';
+import { ClipboardList } from 'lucide-react'; // AGENCYOS_V2_PART20
 import { Crown, Building2, Users, Briefcase, Wallet, User, Eye, EyeOff, Mail, Lock, ShieldCheck, CalendarCheck, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PORTALS, LoginPortal, ROLE_LABEL, DEFAULT_PASSWORD, hashPassword, Credential, LoginEvent, ResetRequest, CRED_KEY, LOGIN_LOG_KEY, RESET_KEY } from '../lib/rbac';
 import { readKey, writeKey, uid, nowStamp } from '../lib/sharedStore';
 
-const ICONS: Record<LoginPortal, React.ElementType> = { super_admin: Crown, admin: Building2, hr: Users, manager: Briefcase, finance: Wallet, employee: User };
+const ICONS: Record<LoginPortal, React.ElementType> = { super_admin: Crown, admin: Building2, hr: Users, manager: Briefcase, project_manager: ClipboardList, finance: Wallet, employee: User };
 const ACCENT: Record<LoginPortal, [string, string]> = {
   super_admin: ['#7c3aed', '#4f46e5'], admin: ['#2563eb', '#0891b2'], hr: ['#db2777', '#e11d48'],
-  manager: ['#f59e0b', '#ea580c'], finance: ['#10b981', '#0d9488'], employee: ['#334155', '#0f172a'],
+  manager: ['#f59e0b', '#ea580c'], project_manager: ['#0ea5e9', '#2563eb'], finance: ['#10b981', '#0d9488'], employee: ['#334155', '#0f172a'],
 };
 
 export const RoleLogin: React.FC = () => {

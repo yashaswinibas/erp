@@ -5,7 +5,7 @@ import { FinanceDashboard } from './components/FinanceDashboard';
 import { DocumentCenter } from './components/DocumentCenter'; // AGENCYOS_V2_PART13
 import { FinanceBook } from './components/FinanceBook';
 import { ClientReimbursementModule } from './components/ClientReimbursementModule'; // AGENCYOS_V2_PART11
-import { canAccess, homeTab, ROLE_LABEL } from './lib/rbac';
+import { canAccess, homeTab, ROLE_LABEL, setFieldAccess } from './lib/rbac';
 import { useShared } from './lib/sharedStore';
 import { AppProvider, useApp } from './context/AppContext';
 import { RoleDashboardView } from './components/RoleDashboardView';
@@ -117,6 +117,7 @@ function MainApp() {
 
   const unreadNotifs = notifications.filter(n => !n.read);
   useShared<Record<string, string[]>>('paa_x_perm_overrides', {}); // AGENCYOS_V2_PART14 re-render menu when permissions change
+  setFieldAccess(currentRole !== 'employee' || currentUser.workMode === 'field'); // AGENCYOS_V2_PART20
   const allowed = canAccess(currentRole, activeTab);
   useEffect(() => {
     if (isAuthenticated && !canAccess(currentRole, activeTab)) setActiveTab(homeTab(currentRole, currentRole === 'employee' && currentUser.workMode === 'field'));

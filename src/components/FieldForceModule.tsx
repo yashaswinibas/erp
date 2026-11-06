@@ -1,3 +1,4 @@
+import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { FieldVisit, FieldVisitType } from '../types';
@@ -33,7 +34,7 @@ export const FieldForceModule: React.FC<FieldForceProps> = ({
     clients,
     leads,
     currentUser
-  } = useApp();
+  } = scopeForStaff(useApp());
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
