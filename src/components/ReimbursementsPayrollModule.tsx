@@ -1,3 +1,4 @@
+import { FinanceLinkBar } from './FinanceLinkBar'; // AGENCYOS_V2_PART16
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ProofThumbs } from './ProofThumbs'; // AGENCYOS_V2_PART12
@@ -125,6 +126,7 @@ export const ReimbursementsPayrollModule: React.FC<{
 
   return (
     <div className="space-y-6">
+      <FinanceLinkBar kind="employee" />
 
       {/* Module Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">

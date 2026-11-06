@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { UserRole } from '../types';
+import { PERM_KEY, LOCKED_TABS, defaultAccess, effectiveAccess } from '../lib/rbac'; // AGENCYOS_V2_PART14
 import { can, ROLE_LABEL, TAB_ACCESS, DEFAULT_PASSWORD, hashPassword, Credential, LoginEvent, ResetRequest, CRED_KEY, LOGIN_LOG_KEY, RESET_KEY } from '../lib/rbac';
 import { useShared, nowStamp } from '../lib/sharedStore';
 import { inputCls, btnPrimary, btnGhost, btnGood, btnBad, card, th, td, Badge, Field, Tabs, Empty, Modal } from './ui2';
@@ -52,6 +53,7 @@ export const AccessAdmin: React.FC = () => {
   const [creds, setCreds] = useShared<Credential[]>(CRED_KEY, []);
   const [history] = useShared<LoginEvent[]>(LOGIN_LOG_KEY, []);
   const [resets, setResets] = useShared<ResetRequest[]>(RESET_KEY, []);
+  const [perm, setPerm] = useShared<Record<string, string[]>>(PERM_KEY, {});
   const manage = can.manageRoles(currentRole);
   const resetter = can.resetPasswords(currentRole);
   const [tab, setTab] = useState('me');
@@ -153,10 +155,32 @@ export const AccessAdmin: React.FC = () => {
 
       {tab === 'matrix' && manage && (
         <div className={`${card} overflow-x-auto`}>
-          <table className="w-full"><thead><tr><th className={th}>Screen</th>{ROLES.map((r) => <th key={r} className={th}>{ROLE_LABEL[r]}</th>)}</tr></thead>
-            <tbody>{Object.entries(TAB_ACCESS).map(([k, roles]) => (
-              <tr key={k} className="border-t border-slate-100 dark:border-slate-800"><td className={td}>{k.replace(/_/g, ' ')}</td>
-                {ROLES.map((r) => <td key={r} className={`${td} text-center`}>{roles.includes(r) ? <span className="text-emerald-600 font-bold">Yes</span> : <span className="text-slate-300">-</span>}</td>)}</tr>))}</tbody></table>
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <p className="text-xs text-slate-500 mr-auto">Tick a box to turn a screen <b className="text-emerald-600">ON</b> for that role, untick to turn it <b className="text-rose-600">OFF</b>. Changes apply straight away. Super Admin always keeps full access.</p>
+            <button className={btnGhost} onClick={() => { if (confirm('Reset all permissions to default?')) { setPerm({}); logAudit('PERMISSIONS_RESET', 'All screens', 'Back to default'); } }}>Reset to default</button>
+          </div>
+          <table className="w-full"><thead><tr><th className={th}>Screen</th>{ROLES.map((r) => <th key={r} className={`${th} text-center`}>{ROLE_LABEL[r]}</th>)}</tr></thead>
+            <tbody>{Object.keys(TAB_ACCESS).map((k) => {
+              const roles = effectiveAccess(k, perm);
+              const changed = Array.isArray(perm[k]);
+              return (
+              <tr key={k} className="border-t border-slate-100 dark:border-slate-800"><td className={td}>{k.replace(/_/g, ' ')}{changed && <span className="ml-2 text-[9px] uppercase tracking-wider font-bold text-amber-600">changed</span>}</td>
+                {ROLES.map((r) => {
+                  const locked = r === 'super_admin' || LOCKED_TABS.includes(k);
+                  const on = locked ? defaultAccess(k).includes(r) : roles.includes(r);
+                  const flip = () => {
+                    if (locked) return;
+                    const next = on ? roles.filter((x) => x !== r) : [...roles, r];
+                    setPerm((p) => ({ ...p, [k]: next }));
+                    logAudit('PERMISSION_CHANGED', k, `${ROLE_LABEL[r] || r}: ${on ? 'OFF' : 'ON'}`);
+                  };
+                  return <td key={r} className={`${td} text-center`}>
+                    <button type="button" onClick={flip} disabled={locked} title={locked ? 'Fixed' : on ? 'ON - click to turn off' : 'OFF - click to turn on'}
+                      className={`inline-flex items-center justify-center w-6 h-6 rounded-md border-2 transition-colors ${on ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-transparent hover:border-emerald-400'} ${locked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+                      <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor"><path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clipRule="evenodd" /></svg>
+                    </button></td>;
+                })}</tr>);
+            })}</tbody></table>
         </div>
       )}
     </div>

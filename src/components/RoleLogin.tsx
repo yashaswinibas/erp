@@ -79,7 +79,7 @@ export const RoleLogin: React.FC = () => {
         <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '44px 44px' }} />
         <div className="relative z-10 flex flex-col justify-between w-full p-12 xl:p-16">
           <div className="flex items-center gap-4">
-            <span className="h-24 w-24 rounded-full overflow-hidden shadow-lg ring-4 ring-amber-400/60 shrink-0 bg-slate-800 inline-flex"><img src={company.logoUrl || '/logo.png'} alt={company.name} className="w-full h-full object-cover scale-[1.3]" /></span><div><div className="text-2xl font-extrabold tracking-tight">{company.name}</div><div className="text-sm font-semibold text-amber-300">{company.tagline}</div></div>
+            <img src="/logo-wide.png" alt={company.name} data-x="AGENCYOS_V2_PART18" className="h-28 w-auto bg-white rounded-2xl px-4 py-2 shadow-lg" />
           </div>
 
           <div className="max-w-lg">
@@ -112,7 +112,7 @@ export const RoleLogin: React.FC = () => {
       <div className="flex-1 flex items-center justify-center p-6 sm:p-10 bg-slate-50 lg:bg-white">
         <div className="w-full max-w-[440px]">
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <span className="h-16 w-16 rounded-full overflow-hidden shadow-lg ring-2 ring-amber-400/70 shrink-0 bg-slate-800 inline-flex"><img src={company.logoUrl || '/logo.png'} alt={company.name} className="w-full h-full object-cover scale-[1.3]" /></span><div><div className="font-extrabold text-slate-900">{company.name}</div><div className="text-xs font-semibold text-amber-600">{company.tagline}</div></div>
+            <img src="/logo-wide.png" alt={company.name} data-x="AGENCYOS_V2_PART18" className="h-20 w-auto mx-auto" />
           </div>
 
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome back</h1>

@@ -46,9 +46,17 @@ export const TAB_ACCESS: Record<string, string[]> = {
   client_reimbursements: [SA, AD, FN, MG, PM],
   audit_settings: [SA, AD],
   access_admin: ALL,
+  document_center: [SA, AD, HR, MG, PM, FN],
+  business_finance: [SA, AD, FN],
 };
 
-export const canAccess = (role: string, tab: string) => (TAB_ACCESS[tab] || [SA, AD]).includes(role);
+// AGENCYOS_V2_PART14: Super Admin can switch screens on / off per role (saved in this browser).
+export const PERM_KEY = 'paa_x_perm_overrides';
+export const LOCKED_TABS = ['access_admin'];
+export const defaultAccess = (tab: string) => TAB_ACCESS[tab] || [SA, AD];
+export const readOverrides = (): Record<string, string[]> => { try { return JSON.parse(localStorage.getItem(PERM_KEY) || '{}') || {}; } catch { return {}; } };
+export const effectiveAccess = (tab: string, ov: Record<string, string[]> = readOverrides()) => Array.isArray(ov[tab]) ? ov[tab] : defaultAccess(tab);
+export const canAccess = (role: string, tab: string) => role === SA || LOCKED_TABS.includes(tab) ? defaultAccess(tab).includes(role) : effectiveAccess(tab).includes(role);
 
 export const homeTab = (role: string, fieldWorker = false) =>
   role === SA || role === AD ? 'owner_desk'

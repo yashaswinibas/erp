@@ -1,5 +1,6 @@
 ﻿// Client Reimbursement Pool: money received from a client to spend on their behalf
 // (ads budget, printing, travel...), what was spent, and the balance left per client.
+import { FinanceLinkBar } from './FinanceLinkBar'; // AGENCYOS_V2_PART16
 import React, { useMemo, useState } from 'react';
 import { ArrowDownLeft, ArrowUpRight, Trash2, Paperclip, Search } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -99,6 +100,7 @@ export const ClientReimbursementModule: React.FC = () => {
   const kpi = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6';
   return (
     <div className="space-y-6">
+      <FinanceLinkBar kind="client" />
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Client Reimbursement</h2>

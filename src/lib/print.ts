@@ -1,8 +1,10 @@
+// AGENCYOS_V2_PART17
 ﻿// Printable documents: opens a clean A4 page and the print dialog,
 // where the user can choose "Save as PDF".
 import { CompanyConfig } from '../types';
 import { inr, rupeesInWords } from './money';
 import { fmtDate } from './dates';
+import { LH_CSS, wrapLetterhead } from './letterhead';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
@@ -19,12 +21,12 @@ th{background:#f1f5f9} .r{text-align:right} .kv{display:grid;grid-template-colum
 function openDoc(title: string, css: string, html: string) {
   const w = window.open('', '_blank');
   if (!w) { alert('Please allow pop-ups for this site to print or save PDFs.'); return; }
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>${css}</style></head><body>${html}<script>window.onload=function(){setTimeout(function(){window.print()},400)}</script></body></html>`);
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>${css}${LH_CSS}</style></head><body class="lh">${wrapLetterhead(html)}<script>window.onload=function(){setTimeout(function(){window.print()},400)}</script></body></html>`);
   w.document.close();
 }
 
 export function printHtml(title: string, c: CompanyConfig, body: string) {
-  openDoc(title, CSS, `<div class="head">${c.logoUrl ? `<img src="${esc(c.logoUrl)}" onerror="this.style.display='none'">` : ''}<div><h1>${esc(c.name)}</h1><p>${esc(c.address)}</p><p>${esc(c.phone)} | ${esc(c.email)} | GSTIN ${esc(c.gstNumber)}</p></div></div>
+  openDoc(title, CSS, `${c.gstNumber ? `<div class="lh-gst">GSTIN: ${esc(c.gstNumber)}</div>` : ''}
 ${body}`);
 }
 

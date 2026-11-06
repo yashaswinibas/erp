@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { RoleLogin } from './components/RoleLogin'; // AGENCYOS_V2_PART4
 import { AccessAdmin, ForcePasswordChange } from './components/AccessAdmin';
 import { FinanceDashboard } from './components/FinanceDashboard';
+import { DocumentCenter } from './components/DocumentCenter'; // AGENCYOS_V2_PART13
+import { FinanceBook } from './components/FinanceBook';
 import { ClientReimbursementModule } from './components/ClientReimbursementModule'; // AGENCYOS_V2_PART11
 import { canAccess, homeTab, ROLE_LABEL } from './lib/rbac';
+import { useShared } from './lib/sharedStore';
 import { AppProvider, useApp } from './context/AppContext';
 import { RoleDashboardView } from './components/RoleDashboardView';
 import { AnalyticsView } from './components/AnalyticsView';
@@ -113,6 +116,7 @@ function MainApp() {
   const [rememberMe, setRememberMe] = useState(true);
 
   const unreadNotifs = notifications.filter(n => !n.read);
+  useShared<Record<string, string[]>>('paa_x_perm_overrides', {}); // AGENCYOS_V2_PART14 re-render menu when permissions change
   const allowed = canAccess(currentRole, activeTab);
   useEffect(() => {
     if (isAuthenticated && !canAccess(currentRole, activeTab)) setActiveTab(homeTab(currentRole, currentRole === 'employee' && currentUser.workMode === 'field'));
@@ -401,7 +405,7 @@ function MainApp() {
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <span className="h-9 w-9 rounded-full overflow-hidden shadow-lg ring-2 ring-amber-400/70 shrink-0 bg-slate-800 inline-flex"><img src={company.logoUrl || '/logo.png'} alt={company.name} className="w-full h-full object-cover scale-[1.3]" /></span><span className="font-extrabold text-sm text-slate-900 dark:text-white">{company.name}</span>
+          <img src="/logo-wide.png" alt={company.name} data-x="AGENCYOS_V2_PART18" className="h-10 w-auto bg-white rounded-lg px-1" />
         </div>
         <div className="flex items-center gap-2">
           <button onClick={toggleTheme} className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
@@ -424,12 +428,8 @@ function MainApp() {
 
         {/* Brand Lockup: Blue icon with letter A + AgencyOS ERP */}
         <div className="p-5 border-b border-slate-200/80 dark:border-slate-800">
-          <div className="flex items-center gap-3">
-            <span className="h-12 w-12 rounded-full overflow-hidden shadow-lg ring-2 ring-amber-400/70 shrink-0 bg-slate-800 inline-flex"><img src={company.logoUrl || '/logo.png'} alt={company.name} className="w-full h-full object-cover scale-[1.3]" /></span>
-            <div className="min-w-0">
-              <div className="font-extrabold text-sm leading-tight text-slate-900 dark:text-white truncate">{company.name}</div>
-              <div className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 truncate">{company.tagline}</div>
-            </div>
+          <div className="flex items-center justify-center">
+            <img src="/logo-wide.png" alt={company.name} data-x="AGENCYOS_V2_PART18" className="w-full max-w-[220px] h-auto bg-white rounded-xl px-2 py-1.5 shadow-sm" />
           </div>
         </div>
 
@@ -509,18 +509,6 @@ function MainApp() {
                 <span>My Employee Workdesk</span>
               </button>
 
-              <button
-                hidden={!canAccess(currentRole, 'finance_desk')}
-                onClick={() => { setActiveTab('finance_desk'); setSidebarOpen(false); }}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
-                  activeTab === 'finance_desk'
-                    ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                <DollarSign className="w-4 h-4 text-slate-400 shrink-0" />
-                <span>Finance Dashboard</span>
-              </button>
             </div>
           </div>
 
@@ -659,6 +647,19 @@ function MainApp() {
                   <FileCheck className="w-4 h-4 text-slate-400 shrink-0" />
                   <span>Agreements</span>
                 </button>
+
+                <button
+                  hidden={!canAccess(currentRole, 'document_center')}
+                  onClick={() => { setActiveTab('document_center'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'document_center'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Document Center</span>
+                </button>
               </div>
             )}
           </div>
@@ -743,18 +744,44 @@ function MainApp() {
             )}
           </div>
 
-          {/* SECTION: FINANCE & FIELD FORCE */}
+          {/* SECTION: FINANCE - all money screens in one place (AGENCYOS_V2_PART15) */}
           <div className="space-y-1">
             <button
               onClick={() => toggleSection('finance')}
               className="w-full flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200"
             >
-              <span>FINANCE & FIELD FORCE</span>
+              <span>FINANCE</span>
               {collapsedSections.finance ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
 
             {!collapsedSections.finance && (
               <div className="space-y-0.5 pl-1">
+                <button
+                  hidden={!canAccess(currentRole, 'finance_desk')}
+                  onClick={() => { setActiveTab('finance_desk'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'finance_desk'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <DollarSign className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Finance Dashboard</span>
+                </button>
+
+                <button
+                  hidden={!canAccess(currentRole, 'business_finance')}
+                  onClick={() => { setActiveTab('business_finance'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'business_finance'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <Receipt className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Finance & Cash Book</span>
+                </button>
+
                 <button
                   hidden={!canAccess(currentRole, 'billing')}
                   onClick={() => { setActiveTab('billing'); setSidebarOpen(false); }}
@@ -782,32 +809,6 @@ function MainApp() {
                 </button>
 
                 <button
-                  hidden={!canAccess(currentRole, 'field_force')}
-                  onClick={() => { setActiveTab('field_force'); setSidebarOpen(false); }}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
-                    activeTab === 'field_force'
-                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
-                  }`}
-                >
-                  <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Client Field Visits</span>
-                </button>
-
-                <button
-                  hidden={!canAccess(currentRole, 'field_gps')}
-                  onClick={() => { setActiveTab('field_gps'); setSidebarOpen(false); }}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
-                    activeTab === 'field_gps'
-                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
-                  }`}
-                >
-                  <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Field Visit GPS</span>
-                </button>
-
-                <button
                   hidden={!canAccess(currentRole, 'reimbursements')}
                   onClick={() => { setActiveTab('reimbursements'); setSidebarOpen(false); }}
                   className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
@@ -831,6 +832,60 @@ function MainApp() {
                 >
                   <CheckSquare className="w-4 h-4 text-slate-400 shrink-0" />
                   <span>Client Reimbursement</span>
+                </button>
+
+                <button
+                  hidden={!canAccess(currentRole, 'hr_payroll')}
+                  onClick={() => { setActiveTab('hr_payroll'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'hr_payroll'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <UserCheck className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Payroll & Payslips</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* SECTION: FIELD FORCE */}
+          <div className="space-y-1">
+            <button
+              onClick={() => toggleSection('fieldforce')}
+              className="w-full flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1 cursor-pointer hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <span>FIELD FORCE</span>
+              {collapsedSections.fieldforce ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {!collapsedSections.fieldforce && (
+              <div className="space-y-0.5 pl-1">
+                <button
+                  hidden={!canAccess(currentRole, 'field_force')}
+                  onClick={() => { setActiveTab('field_force'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'field_force'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Client Field Visits</span>
+                </button>
+
+                <button
+                  hidden={!canAccess(currentRole, 'field_gps')}
+                  onClick={() => { setActiveTab('field_gps'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'field_gps'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Field Visit GPS</span>
                 </button>
               </div>
             )}
@@ -1011,6 +1066,8 @@ function MainApp() {
           <ForcePasswordChange />
           {allowed && activeTab === 'finance_desk' && <FinanceDashboard onOpen={setActiveTab} />}
           {allowed && activeTab === 'access_admin' && <AccessAdmin />}
+          {allowed && activeTab === 'document_center' && <DocumentCenter />}
+          {allowed && activeTab === 'business_finance' && <FinanceBook />}
           {allowed && activeTab === 'client_reimbursements' && <ClientReimbursementModule />}
           {allowed && activeTab.startsWith('deals_') && <DealsModule initialTab={activeTab.slice(6) as DealsTab} />}
           {allowed && activeTab === 'field_gps' && <FieldGpsModule />}

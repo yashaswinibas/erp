@@ -1,3 +1,4 @@
+// AGENCYOS_V2_PART17
 import React, { useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { Printer, Download, X, CheckCircle, ShieldCheck, ArrowLeft } from 'lucide-react'; // AGENCYOS_V2_PART7
@@ -16,7 +17,13 @@ export const DocumentViewerModal: React.FC = () => {
   const { docType, data } = docPreview;
 
   const handlePrint = () => {
-    window.print();
+    // print only the document, on the official letterhead, in a clean A4 window
+    const el = printRef.current;
+    const w = el ? window.open('', '_blank') : null;
+    if (!el || !w) { window.print(); return; }
+    const css = Array.from(document.querySelectorAll('link[rel="stylesheet"], style')).map((n) => n.tagName === 'LINK' ? `<link rel="stylesheet" href="${(n as HTMLLinkElement).href}">` : n.outerHTML).join('');
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${docPreview.title}</title>${css}<style>@page{size:A4;margin:0}html,body{margin:0;background:#fff}body .print-page.lh-page{width:210mm !important;max-width:210mm !important;min-height:295mm;aspect-ratio:auto;padding:44mm 18mm 32mm !important;background-size:210mm 297mm;background-repeat:repeat-y;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>${el.outerHTML}<script>window.onload=function(){var p=document.querySelector('.lh-page'),H=Math.floor(295*96/25.4);if(p&&p.scrollHeight>H){var kids=[].slice.call(p.children),pad=(44+32)*96/25.4,inner=p.scrollHeight-pad,z=Math.max(0.6,(H-pad)/inner);kids.forEach(function(k){k.style.zoom=z});}setTimeout(function(){window.print()},500)}<\/script></body></html>`);
+    w.document.close();
   };
 
   const getEmployee = (empId: string) => {
@@ -463,11 +470,11 @@ export const DocumentViewerModal: React.FC = () => {
         </div>
 
         {/* Printable Official Document Layout */}
-        <div ref={printRef} className="print-page bg-white p-8 md:p-12 relative min-h-[900px] flex flex-col justify-between select-text">
+        <div ref={printRef} className="print-page lh-page relative flex flex-col justify-between select-text">
 
           {/* Subtle Watermark in background matching the provided letterhead */}
           <div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-8 select-none z-0"
+            className="hidden"
             aria-hidden="true"
           >
             <img
@@ -480,7 +487,7 @@ export const DocumentViewerModal: React.FC = () => {
           {/* Official Letterhead Header (Strictly preserving Prompt #1, #36, #61) */}
           <div className="relative z-10">
             <div className="flex items-start justify-between gap-4 pb-4">
-              <div className="flex items-center gap-4">
+              <div className="hidden">
                 {/* Logo Mark matching uploaded image_1c6ded1a.png */}
                 <div className="flex items-center gap-3">
                   <div className="relative w-16 h-16 flex items-center justify-center">
@@ -517,7 +524,7 @@ export const DocumentViewerModal: React.FC = () => {
             </div>
 
             {/* Official Blue Divider Bar with Star Node */}
-            <div className="relative w-full h-[2px] bg-[#0050C8] my-3">
+            <div className="hidden">
               <div className="absolute -top-[5px] left-8 w-3 h-3 bg-[#0050C8] rotate-45"></div>
               <div className="absolute -top-[5px] right-8 w-2 h-2 bg-[#0050C8] rotate-45"></div>
             </div>
@@ -555,12 +562,12 @@ export const DocumentViewerModal: React.FC = () => {
             </div>
 
             {/* Official Footer Divider with Star Node */}
-            <div className="relative w-full h-[2px] bg-[#0050C8] mt-6 mb-3">
+            <div className="hidden">
               <div className="absolute -top-[5px] right-6 w-3 h-3 bg-[#0050C8] rotate-45"></div>
             </div>
 
             {/* Exact Contact Details as per uploaded Letterhead Footer */}
-            <div className="text-center space-y-1 text-slate-800">
+            <div className="hidden">
               <div className="flex items-center justify-center gap-6 text-xs font-bold tracking-tight text-slate-900">
                 <span>{company.phone}</span>
                 <span>{company.email}</span>
