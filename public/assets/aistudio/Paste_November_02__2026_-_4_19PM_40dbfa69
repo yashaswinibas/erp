@@ -1,0 +1,2002 @@
+# MASTER DEVELOPMENT PROMPT — PRIORITY ADS AGENCY
+
+Build a complete, professional, production-ready **ERP + CRM + HR + Attendance + Payroll + Reimbursement + Field Force + Project Management system** for **Priority Ads Agency**.
+
+The system must be fully connected. Do not build the modules as separate disconnected systems. Data entered in one module should automatically be available wherever it is required in another module.
+
+The application must have a modern, clean, professional UI with responsive desktop/tablet/mobile layouts, role-based dashboards, proper navigation, search, filters, tables, forms, validation, notifications and secure backend permissions.
+
+---
+
+# 1. COMPANY BRANDING & DOCUMENT FORMAT
+
+The company is:
+
+**PRIORITY ADS AGENCY**
+
+Tagline:
+
+**Your success is our priority**
+
+Use the uploaded Priority Ads Agency logo and letterhead as the official branding reference.
+
+The generated documents MUST follow the SAME document format/style shown in the provided images.
+
+Do NOT create a different document design.
+
+Maintain:
+
+- Same Priority Ads Agency logo
+- Same blue and yellow/gold branding
+- Same professional letterhead appearance
+- Same header structure
+- Same footer structure
+- Same company branding
+- Same general spacing and alignment
+- Same watermark/logo treatment where applicable
+- Same contact information placement
+- Same professional typography style
+- Clean white document background
+
+The company information shown on the provided letterhead should be used for official documents.
+
+The document footer contains the company's:
+
+- Phone number
+- Email
+- Website
+- Office address
+
+All generated official documents should use this company letterhead/template.
+
+Documents include:
+
+- Salary Payslip
+- Reimbursement Statement
+- HR Letters
+- Offer Letter
+- Joining Letter
+- Experience Letter
+- Relieving Letter
+- Quotation
+- Agreement
+- Invoice
+- Payment Receipt
+- Employee Reports
+- Client Reports
+- Other official company documents
+
+The content should change according to the document, but the **official Priority Ads Agency document format must remain consistent**.
+
+---
+
+# 2. AUTHENTICATION & LOGIN
+
+Create a proper login page before the user can access the system.
+
+Login fields:
+
+- Company
+- Email/Username
+- Password
+- Remember Me
+- Forgot Password
+- Login button
+
+After login:
+
+**Login → Authentication → Company → User → Role → Permissions → Role Dashboard**
+
+The system must identify:
+
+- Company
+- User
+- Role
+- Department
+- Designation
+- Reporting Manager
+- Project Manager
+- Assigned Projects
+- Permissions
+
+Redirect each user to their appropriate dashboard.
+
+---
+
+# 3. LOGIN/LOGOUT ATTENDANCE INTEGRATION — VERY IMPORTANT
+
+Attendance must automatically use the employee's actual system login/logout time.
+
+When an employee logs into the application:
+
+**Successful Login = Attendance Check-In**
+
+Example:
+
+Employee logs in at 09:32 AM.
+
+Automatically record:
+
+**Check-in: 09:32 AM**
+
+When the employee logs out:
+
+**Logout = Attendance Check-Out**
+
+Example:
+
+Employee logs out at 06:41 PM.
+
+Automatically record:
+
+**Check-out: 06:41 PM**
+
+Automatically calculate:
+
+**Working Hours = Check-out Time − Check-in Time**
+
+Do not require the employee to manually enter normal login/logout attendance.
+
+If the employee forgets to log out, provide an authorized attendance regularization mechanism.
+
+The system must distinguish between:
+
+- Login session
+- Attendance
+- Field visit
+- Work mode
+
+---
+
+# 4. COMPANY MANAGEMENT
+
+Create company management with:
+
+- Company Name
+- Company Logo
+- Company Code
+- Address
+- Phone
+- Email
+- Website
+- GST/PAN
+- Currency
+- Time Zone
+- Working Days
+- Office Start Time
+- Office End Time
+- Grace Period
+- Minimum Working Hours
+- Half-Day Rules
+- Holiday Rules
+
+Company branding should appear on dashboards and official generated documents.
+
+---
+
+# 5. ROLE MANAGEMENT
+
+Create these main roles:
+
+1. Super Admin
+2. Admin
+3. HR
+4. Manager
+5. Project Manager
+6. Employee
+
+Permissions must be role-based and enforced by the backend.
+
+---
+
+# 6. SUPER ADMIN
+
+Super Admin has full access to the system.
+
+Can manage:
+
+- Companies
+- Users
+- Roles
+- Permissions
+- Employees
+- Departments
+- Designations
+- Attendance
+- Leave
+- Daily Activity
+- Field Force
+- Leads
+- Clients
+- Projects
+- Tasks
+- Quotations
+- Agreements
+- Services
+- Invoices
+- Payments
+- Expenses
+- Reimbursements
+- Payroll
+- Payslips
+- Reports
+- Documents
+- Settings
+- Audit Logs
+
+---
+
+# 7. ADMIN
+
+Admin manages general company operations.
+
+Access can include:
+
+- Dashboard
+- Employees
+- Clients
+- Leads
+- Projects
+- Tasks
+- Attendance
+- Field Visits
+- Reimbursements
+- Quotations
+- Agreements
+- Invoices
+- Payments
+- Expenses
+- Reports
+
+Access must still follow permissions.
+
+---
+
+# 8. HR MANAGEMENT
+
+HR is responsible for employee and HR operations.
+
+HR should manage:
+
+- Employees
+- Departments
+- Designations
+- Joining information
+- Employee documents
+- Employee status
+- Attendance
+- Leave
+- Daily Activity
+- Field Activity
+- Salary
+- Payroll
+- Payslips
+- Reimbursements
+- Employee reports
+
+Salary and sensitive employee information must be restricted.
+
+---
+
+# 9. EMPLOYEE MANAGEMENT
+
+Create:
+
+**+ Add Employee**
+
+Employee fields:
+
+- Employee ID
+- Full Name
+- Profile Photo
+- Email
+- Phone
+- Date of Birth
+- Joining Date
+- Department
+- Designation
+- Employment Type
+- Reporting Manager
+- Project Manager
+- HR
+- Assigned Project
+- Assigned Client — Optional
+- Salary
+- Work Location
+- Work Mode
+- Skills
+- Experience
+- Documents
+- System Role
+- Account Status
+
+When creating an employee, connect:
+
+**Employee → Department → Designation → Reporting Manager → Project Manager → Project → Client**
+
+Client can remain empty for internal projects.
+
+---
+
+# 10. DEPARTMENT MANAGEMENT
+
+HR/Admin can create and manage departments.
+
+Examples:
+
+- Development
+- Sales
+- Marketing
+- HR
+- Finance
+- Operations
+- Design
+- Management
+
+Employees must be linked to departments.
+
+---
+
+# 11. DESIGNATION MANAGEMENT
+
+HR/Admin can create and manage designations.
+
+Examples:
+
+- Software Developer
+- AI/ML Engineer
+- Sales Executive
+- HR Executive
+- Accountant
+- Project Manager
+- Team Lead
+- Manager
+
+Maintain designation history when an employee changes designation.
+
+---
+
+# 12. ATTENDANCE MANAGEMENT
+
+Attendance statuses:
+
+- Present
+- Absent
+- Half Day
+- Late
+- Leave
+- Holiday
+- Week Off
+- Work From Home
+- Field Visit
+- On Duty
+
+Attendance should record:
+
+- Employee
+- Date
+- Check-in
+- Check-out
+- Working Hours
+- Status
+- Work Mode
+- Remarks
+
+---
+
+# 13. ATTENDANCE RULES
+
+Company should configure:
+
+- Start Time
+- End Time
+- Grace Period
+- Minimum Working Hours
+- Half-Day Threshold
+- Late Threshold
+- Break Duration
+- Working Days
+- Holidays
+
+Attendance status should be automatically calculated based on configured company rules.
+
+---
+
+# 14. ATTENDANCE REGULARIZATION
+
+If an employee forgets to check in/out:
+
+**Employee → Regularization Request → Manager/HR → Approve/Reject**
+
+Fields:
+
+- Date
+- Correct Check-in
+- Correct Check-out
+- Reason
+- Attachment
+- Remarks
+
+All changes must be recorded in audit logs.
+
+---
+
+# 15. DAILY ACTIVITY
+
+Employees must submit daily work activity.
+
+Create:
+
+**+ Add Daily Activity**
+
+Fields:
+
+- Date
+- Employee
+- Project
+- Client — Optional
+- Task
+- Completed Work
+- Work in Progress
+- Pending Work
+- Hours Spent
+- Blockers
+- Remarks
+- Attachments
+- Links
+
+Daily Activity must connect to tasks and projects.
+
+---
+
+# 16. MANAGER WORK VISIBILITY
+
+Managers should be able to see their employees':
+
+- Attendance
+- Login time
+- Logout time
+- Working hours
+- Daily activity
+- Tasks
+- Completed work
+- Pending work
+- Field visits
+- Project allocation
+- Workload
+- Reimbursements requiring review
+
+---
+
+# 17. PROJECT MANAGER
+
+Project Managers should see:
+
+- Projects
+- Assigned employees
+- Tasks
+- Deadlines
+- Project progress
+- Daily activities
+- Client meetings
+- Field visits
+- Blockers
+- Deliverables
+- Project reports
+
+---
+
+# 18. EMPLOYEE DASHBOARD
+
+Employees should see:
+
+- Today's attendance
+- Check-in time
+- Check-out time
+- Working hours
+- Today's tasks
+- Projects
+- Daily activity
+- Leave
+- Field visits
+- Reimbursements
+- Salary
+- Payslips
+- Notifications
+
+Employees must only access their own private records.
+
+---
+
+# 19. CRM — LEADS
+
+Create:
+
+**+ Add Lead**
+
+Fields:
+
+- Lead ID
+- Name
+- Company
+- Contact Person
+- Email
+- Phone
+- Source
+- Service Required
+- Estimated Value
+- Status
+- Priority
+- Assigned Employee
+- Follow-up Date
+- Notes
+- Documents
+
+Statuses:
+
+- New
+- Contacted
+- Qualified
+- Proposal
+- Negotiation
+- Won
+- Lost
+
+---
+
+# 20. LEAD → CLIENT
+
+When a lead becomes Won:
+
+**Lead → Convert → Client**
+
+Do not delete the original lead.
+
+Keep complete lead history.
+
+The new client should retain relevant lead information.
+
+---
+
+# 21. CLIENT MANAGEMENT
+
+Create:
+
+**+ Add Client**
+
+Fields:
+
+- Client ID
+- Company Name
+- Contact Person
+- Email
+- Phone
+- Website
+- Address
+- GST/PAN
+- Billing Address
+- Account Manager
+- Services
+- Projects
+- Status
+- Notes
+- Documents
+
+A client is optional for internal projects, tasks and employee activities.
+
+---
+
+# 22. CLIENT PROFILE
+
+Client profile should have tabs:
+
+- Overview
+- Contacts
+- Services
+- Projects
+- Tasks
+- Quotations
+- Agreements
+- Invoices
+- Payments
+- Documents
+- Activities
+- Field Visits
+- Follow-ups
+- Notes
+
+---
+
+# 23. FIELD FORCE / CLIENT VISIT MANAGEMENT
+
+Field Force is a major module.
+
+Employees who go outside the office to meet clients, leads, prospects, vendors or for business activities must be able to record the visit.
+
+Create:
+
+**+ Add Field Visit**
+
+Fields:
+
+- Visit ID
+- Employee
+- Date
+- Start Time
+- End Time
+- Lead/Client
+- Contact Person
+- Company Name
+- Visit Type
+- Purpose
+- Meeting Location
+- Address
+- Project — Optional
+- Service — Optional
+- Expected Outcome
+- Actual Outcome
+- Discussion Summary
+- Follow-up Required
+- Next Follow-up Date
+- Remarks
+- Attachments
+- Photos/Documents
+- Visit Status
+
+---
+
+# 24. FIELD VISIT TYPES
+
+Support:
+
+- Client Meeting
+- Lead Meeting
+- Sales Visit
+- Project Meeting
+- Site Visit
+- Business Development
+- Payment Collection
+- Support Visit
+- Vendor Meeting
+- Other
+
+---
+
+# 25. FIELD VISIT CHECK-IN/CHECK-OUT
+
+Employee should have:
+
+**Start Visit**
+
+and
+
+**End Visit**
+
+Example:
+
+Employee: Rahul  
+Client: ABC Technologies  
+Purpose: Project Meeting
+
+Start:
+
+**11:15 AM**
+
+End:
+
+**12:35 PM**
+
+Automatically calculate visit duration.
+
+---
+
+# 26. FIELD FORCE + ATTENDANCE
+
+Field work must connect to attendance.
+
+Example:
+
+**Employee Login → Attendance Check-in → Field Visit → Client Meeting → Field Visit End → Employee Logout → Attendance Check-out**
+
+Work mode should support:
+
+- Office
+- Work From Home
+- Field Visit
+- Client Location
+- Site Location
+
+Do not replace the employee's main attendance record with the field visit. Both should be connected.
+
+---
+
+# 27. FIELD VISIT + CRM
+
+Connect field visits with CRM.
+
+Client/Lead timeline should show:
+
+**Calls → Emails → Messages → Meetings → Field Visits → Follow-ups**
+
+After a field visit, employee can update:
+
+- Lead status
+- Client status
+- Meeting outcome
+- Notes
+- Follow-up date
+- Next action
+
+---
+
+# 28. FIELD VISIT + PROJECT
+
+Field visits can be linked to projects.
+
+Example:
+
+**Client → Project → Employee → Field Visit → Meeting Outcome**
+
+Project Manager should see project-related client visits.
+
+---
+
+# 29. CLIENT VISIT HISTORY
+
+Each client must have a complete visit history.
+
+Show:
+
+- Visit date
+- Employee
+- Contact person
+- Purpose
+- Start time
+- End time
+- Duration
+- Outcome
+- Follow-up
+
+Show:
+
+- Last visit
+- Upcoming visit
+- Total visits
+
+---
+
+# 30. FIELD VISIT + REIMBURSEMENT
+
+Field expenses must be linked to the relevant field visit.
+
+Example:
+
+Field Visit:
+
+- Fuel: ₹400
+- Food: ₹250
+- Parking: ₹50
+
+Total:
+
+₹700
+
+The employee can create reimbursement directly from the field visit.
+
+---
+
+# 31. REIMBURSEMENT MANAGEMENT
+
+Create:
+
+**+ Add Reimbursement**
+
+Fields:
+
+- Reimbursement ID
+- Employee
+- Date
+- Expense Category
+- Amount
+- Description
+- Project — Optional
+- Client — Optional
+- Field Visit — Optional
+- Payment Method
+- Receipt/Bill Upload
+- Remarks
+- Status
+
+Categories:
+
+- Travel
+- Fuel
+- Food
+- Hotel
+- Transportation
+- Parking
+- Internet
+- Mobile
+- Office Supplies
+- Client Meeting
+- Software
+- Other
+
+---
+
+# 32. REIMBURSEMENT APPROVAL
+
+Workflow:
+
+**Employee → Submit → Manager Review → HR/Finance Review → Approved → Paid**
+
+Statuses:
+
+- Draft
+- Submitted
+- Under Review
+- Approved
+- Rejected
+- Paid
+- Cancelled
+
+Employee can track reimbursement status.
+
+---
+
+# 33. PAYROLL & SALARY
+
+HR/Admin should manage:
+
+- Basic Salary
+- HRA
+- Allowances
+- Incentives
+- Bonus
+- Deductions
+- Approved Reimbursement
+- Other Adjustments
+- Gross Salary
+- Net Salary
+- Pay Period
+- Payment Status
+
+Reimbursement should be shown separately from salary and should not be incorrectly treated as salary.
+
+---
+
+# 34. SALARY HISTORY
+
+Maintain salary history.
+
+Example:
+
+January 2026 → ₹25,000 → Joining Salary
+
+July 2026 → ₹28,000 → Increment
+
+Never delete old salary history when salary changes.
+
+---
+
+# 35. SALARY PAYSLIP
+
+Generate a professional PDF payslip.
+
+Use the **same Priority Ads Agency letterhead/document format supplied in the uploaded reference images**.
+
+Payslip must contain:
+
+## Company
+
+- Priority Ads Agency Logo
+- Company Name
+- Address
+- Phone
+- Email
+- Website
+
+## Employee
+
+- Employee Name
+- Employee ID
+- Department
+- Designation
+- Joining Date
+
+## Salary
+
+- Pay Period
+- Basic Salary
+- HRA
+- Allowances
+- Incentives
+- Bonus
+- Deductions
+- Reimbursement
+- Gross Salary
+- Total Deductions
+- Net Pay
+
+Employee can view/download their own payslip.
+
+HR/Admin can generate payslips according to permissions.
+
+---
+
+# 36. PAYSLIP DOCUMENT DESIGN
+
+The payslip must NOT look like a generic software-generated payslip.
+
+Use the Priority Ads Agency letterhead shown in the provided reference.
+
+Maintain:
+
+- Same logo
+- Same header
+- Same blue/gold branding
+- Same footer
+- Same company contact details
+- Same professional spacing
+- Same document identity
+
+Only the middle content should change according to the payslip.
+
+---
+
+# 37. PROJECT MANAGEMENT
+
+Create:
+
+**+ Add Project**
+
+Fields:
+
+- Project ID
+- Project Name
+- Client — Optional
+- Project Manager
+- Employees
+- Start Date
+- End Date
+- Budget
+- Status
+- Priority
+- Description
+- Documents
+
+Statuses:
+
+- Planning
+- Active
+- On Hold
+- Completed
+- Cancelled
+- Archived
+
+---
+
+# 38. TASK MANAGEMENT
+
+Create:
+
+**+ Add Task**
+
+Fields:
+
+- Task ID
+- Project
+- Client — Optional
+- Task Name
+- Description
+- Assigned Employee
+- Manager
+- Project Manager
+- Priority
+- Status
+- Start Date
+- Due Date
+- Estimated Hours
+- Actual Hours
+- Attachments
+
+Statuses:
+
+- To Do
+- In Progress
+- Review
+- Completed
+- Blocked
+- Cancelled
+
+---
+
+# 39. TASK → DAILY ACTIVITY
+
+Employee should be able to select an assigned task while entering daily activity.
+
+Example:
+
+Project:
+
+**CRM Development**
+
+Task:
+
+**WhatsApp Integration**
+
+Daily Activity:
+
+**Completed WhatsApp API integration and testing.**
+
+Avoid duplicate data entry.
+
+---
+
+# 40. SERVICES
+
+Support services such as:
+
+- Website Development
+- App Development
+- AI/ML
+- SEO
+- Digital Marketing
+- Google Ads
+- Meta Ads
+- Graphic Design
+- Video
+- Branding
+- Blockchain/Web3
+- Consulting
+- Custom Services
+
+Services can connect to clients and projects.
+
+---
+
+# 41. QUOTATIONS
+
+Create:
+
+**+ Create Quotation**
+
+Fields:
+
+- Quotation Number
+- Client
+- Date
+- Valid Until
+- Title
+- Items
+- Quantity
+- Unit
+- Unit Price
+- Discount
+- Tax
+- Subtotal
+- Total
+- Terms
+- Notes
+- Created By
+
+Statuses:
+
+- Draft
+- Sent
+- Viewed
+- Accepted
+- Rejected
+- Expired
+- Converted
+
+Use the Priority Ads Agency document format for quotation PDFs.
+
+---
+
+# 42. AGREEMENTS
+
+Where required:
+
+**Quotation → Accepted → Agreement → Project**
+
+Agreement fields:
+
+- Agreement Number
+- Client
+- Start Date
+- End Date
+- Terms
+- Documents
+- Status
+- Renewal Date
+
+Use company letterhead.
+
+---
+
+# 43. INVOICES
+
+Invoices can be created from:
+
+- Quotation
+- Project
+- Service
+- Recurring Service
+
+Statuses:
+
+- Draft
+- Issued
+- Partially Paid
+- Paid
+- Overdue
+- Cancelled
+
+Maintain:
+
+**Invoice → Client → Quotation → Agreement → Project/Service**
+
+Generate invoices using the official Priority Ads Agency document format.
+
+---
+
+# 44. PAYMENTS
+
+Create:
+
+**+ Add Payment**
+
+Fields:
+
+- Payment ID
+- Invoice
+- Client
+- Date
+- Amount
+- Payment Method
+- Transaction Reference
+- Notes
+- Recorded By
+
+Payment methods:
+
+- Bank Transfer
+- UPI
+- Cash
+- Cheque
+- Card
+- Other
+
+Automatically update invoice balance/status.
+
+Generate professional payment receipts using the company document format.
+
+---
+
+# 45. EXPENSE MANAGEMENT
+
+Company expenses:
+
+- Rent
+- Electricity
+- Internet
+- Salaries
+- Contractors
+- Advertising
+- Software
+- Travel
+- Office
+- Equipment
+- Other
+
+Expenses may be linked to:
+
+- Client
+- Project
+- Department
+- Employee
+- Field Visit
+
+---
+
+# 46. DOCUMENT MANAGEMENT
+
+Documents can be attached to:
+
+- Employees
+- Clients
+- Leads
+- Projects
+- Tasks
+- Quotations
+- Agreements
+- Invoices
+- Payments
+- Reimbursements
+- Payslips
+
+Sensitive documents must be permission-controlled.
+
+---
+
+# 47. ROLE-BASED DASHBOARDS
+
+## SUPER ADMIN
+
+Show:
+
+- Companies
+- Employees
+- Clients
+- Leads
+- Active Projects
+- Revenue
+- Payments
+- Outstanding
+- Expenses
+- Profit/Net Position
+- Attendance
+- Field Visits
+- Reimbursements
+
+## ADMIN
+
+Show:
+
+- Leads
+- Clients
+- Projects
+- Employees
+- Tasks
+- Attendance
+- Field Visits
+- Invoices
+- Payments
+
+## HR
+
+Show:
+
+- Employees
+- New Joiners
+- Departments
+- Designations
+- Attendance
+- Leave
+- Daily Activity
+- Payroll
+- Payslips
+- Reimbursements
+- Documents
+
+## MANAGER
+
+Show:
+
+- Team Members
+- Present
+- Absent
+- Late
+- Daily Activity
+- Tasks
+- Pending Work
+- Completed Work
+- Field Visits
+- Reimbursement Requests
+
+## PROJECT MANAGER
+
+Show:
+
+- Active Projects
+- Project Progress
+- Employees
+- Tasks
+- Deadlines
+- Daily Activities
+- Client Visits
+- Blockers
+
+## EMPLOYEE
+
+Show:
+
+- Today's Attendance
+- Check-in
+- Check-out
+- Working Hours
+- Tasks
+- Projects
+- Daily Activity
+- Field Visits
+- Leave
+- Reimbursements
+- Salary
+- Payslips
+
+---
+
+# 48. + ADD BUTTONS
+
+Every major module must have a clear + Add button.
+
+Examples:
+
+- + Add Employee
+- + Add Department
+- + Add Designation
+- + Add Client
+- + Add Lead
+- + Add Project
+- + Add Task
+- + Add Daily Activity
+- + Add Field Visit
+- + Add Reimbursement
+- + Apply Leave
+- + Add Expense
+- + Create Quotation
+- + Create Agreement
+- + Create Invoice
+- + Add Payment
+- + Generate Payslip
+
+---
+
+# 49. SEARCH & FILTERS
+
+All major tables must have:
+
+- Search
+- Filters
+- Date Range
+- Sort
+- Pagination
+- Export where appropriate
+
+Employee filters:
+
+- Department
+- Designation
+- Manager
+- Project Manager
+- Project
+- Joining Date
+- Status
+
+Attendance filters:
+
+- Date
+- Employee
+- Department
+- Manager
+- Status
+- Work Mode
+
+Field Visit filters:
+
+- Employee
+- Client
+- Lead
+- Project
+- Date
+- Visit Type
+- Status
+- Manager
+
+Reimbursement filters:
+
+- Employee
+- Department
+- Category
+- Project
+- Client
+- Date
+- Status
+- Amount
+
+Payroll filters:
+
+- Employee
+- Department
+- Month
+- Year
+- Payment Status
+
+Project filters:
+
+- Client
+- Project Manager
+- Employee
+- Status
+- Deadline
+
+Task filters:
+
+- Project
+- Employee
+- Manager
+- Status
+- Priority
+- Due Date
+
+CRM filters:
+
+- Status
+- Source
+- Employee
+- Priority
+- Date
+
+Invoice filters:
+
+- Client
+- Status
+- Date
+- Due Date
+- Payment Status
+
+---
+
+# 50. REPORTS
+
+HR reports:
+
+- Employee Count
+- Department Report
+- Designation Report
+- Attendance
+- Leave
+- Daily Activity
+- Payroll
+- Salary
+- Reimbursement
+
+Manager reports:
+
+- Team Attendance
+- Team Activity
+- Task Completion
+- Workload
+- Pending Tasks
+- Field Visits
+
+Project reports:
+
+- Project Progress
+- Employee Allocation
+- Task Completion
+- Workload
+- Blockers
+- Client Meetings
+
+CRM reports:
+
+- Leads
+- Conversion
+- Clients
+- Pipeline
+- Follow-ups
+- Field Visits
+
+Finance reports:
+
+- Revenue
+- Invoices
+- Payments
+- Outstanding
+- Expenses
+- Reimbursements
+- Profit/Net Position
+
+---
+
+# 51. NOTIFICATIONS
+
+Create notifications for:
+
+- Login
+- Attendance Check-in
+- Missing Check-out
+- Late Attendance
+- Leave Request
+- Leave Approval/Rejection
+- Task Assignment
+- Task Deadline
+- Overdue Task
+- Daily Activity Reminder
+- Project Assignment
+- Field Visit Assignment
+- Field Visit Reminder
+- Reimbursement Submitted
+- Reimbursement Approved/Rejected
+- Payslip Generated
+- Salary Processed
+- Invoice Due
+- Invoice Overdue
+- Payment Received
+- Agreement Expiry
+- Service Renewal
+
+---
+
+# 52. AUDIT LOG
+
+Record important system activities:
+
+- Login
+- Logout
+- Employee Creation
+- Employee Update
+- Attendance Changes
+- Attendance Regularization
+- Leave Approval
+- Field Visit Creation
+- Field Visit Update
+- Reimbursement Approval
+- Salary Update
+- Payslip Generation
+- Invoice Creation
+- Payment
+- Project Creation
+- Task Update
+- Permission Changes
+
+Record:
+
+- User
+- Action
+- Date
+- Time
+- Related Record
+- Previous Value where applicable
+- New Value where applicable
+
+Never store passwords or sensitive credentials in audit logs.
+
+---
+
+# 53. PERMISSION SYSTEM
+
+Backend permissions must be enforced.
+
+Example permissions:
+
+- employees.view
+- employees.create
+- employees.update
+- employees.delete
+- attendance.view
+- attendance.create
+- attendance.update
+- attendance.regularize
+- leaves.view
+- leaves.create
+- leaves.approve
+- leads.view
+- leads.create
+- leads.update
+- clients.view
+- clients.create
+- clients.update
+- projects.view
+- projects.create
+- projects.update
+- projects.assign
+- tasks.view
+- tasks.create
+- tasks.assign
+- tasks.update
+- daily_activity.view
+- daily_activity.create
+- daily_activity.review
+- field_visits.view
+- field_visits.create
+- field_visits.update
+- reimbursements.view
+- reimbursements.create
+- reimbursements.approve
+- payroll.view
+- payroll.create
+- payslips.view
+- payslips.generate
+- invoices.view
+- invoices.create
+- payments.view
+- payments.create
+- expenses.view
+- expenses.create
+- reports.view
+- users.manage
+- settings.manage
+
+---
+
+# 54. SECURITY
+
+Protect:
+
+- Salary
+- Payslips
+- Employee Documents
+- Personal Information
+- Financial Information
+- Payment Information
+
+An employee must never be able to access another employee's private information.
+
+Do not rely only on frontend hiding.
+
+Backend APIs must verify:
+
+**Authentication → Role → Permission → Data Scope → Action**
+
+---
+
+# 55. COMPLETE EMPLOYEE FLOW
+
+**HR Creates Employee**
+
+↓
+
+**Employee Gets Login**
+
+↓
+
+**Employee Logs In**
+
+↓
+
+**Attendance Automatically Checks In**
+
+↓
+
+**Employee Sees Tasks & Projects**
+
+↓
+
+**Employee Works**
+
+↓
+
+**Employee Updates Daily Activity**
+
+↓
+
+**If Client Visit → Add/Start Field Visit**
+
+↓
+
+**Meet Client/Lead**
+
+↓
+
+**Update Meeting Outcome**
+
+↓
+
+**End Field Visit**
+
+↓
+
+**Daily Activity Updated/Linked**
+
+↓
+
+**Add Travel/Field Expenses**
+
+↓
+
+**Submit Reimbursement**
+
+↓
+
+**Manager/HR Approves**
+
+↓
+
+**Payroll Processes Salary**
+
+↓
+
+**Payslip Generated**
+
+↓
+
+**Employee Downloads Payslip**
+
+---
+
+# 56. COMPLETE BUSINESS FLOW
+
+**Lead**
+
+↓
+
+**Assigned Employee**
+
+↓
+
+**Follow-up**
+
+↓
+
+**Client/Field Visit**
+
+↓
+
+**Qualified**
+
+↓
+
+**Quotation**
+
+↓
+
+**Negotiation**
+
+↓
+
+**Won**
+
+↓
+
+**Client**
+
+↓
+
+**Agreement**
+
+↓
+
+**Project/Service**
+
+↓
+
+**Employees Assigned**
+
+↓
+
+**Tasks**
+
+↓
+
+**Daily Activity**
+
+↓
+
+**Client Meetings/Field Visits**
+
+↓
+
+**Delivery**
+
+↓
+
+**Invoice**
+
+↓
+
+**Payment**
+
+---
+
+# 57. COMPLETE FIELD FORCE FLOW
+
+**Employee Login**
+
+↓
+
+**Attendance Check-in**
+
+↓
+
+**Field Visit Created**
+
+↓
+
+**Client/Lead Selected**
+
+↓
+
+**Start Visit**
+
+↓
+
+**Travel to Client**
+
+↓
+
+**Client Meeting**
+
+↓
+
+**Discussion**
+
+↓
+
+**Meeting Outcome**
+
+↓
+
+**End Visit**
+
+↓
+
+**Daily Activity**
+
+↓
+
+**Follow-up**
+
+↓
+
+**Travel/Food/Parking Expense**
+
+↓
+
+**Reimbursement**
+
+↓
+
+**Manager/HR Approval**
+
+↓
+
+**Payment/Payroll**
+
+---
+
+# 58. COMPLETE DATA RELATIONSHIP
+
+## Employee
+
+**Company → Employee → Department → Designation → Manager → Project Manager → Project → Task → Daily Activity → Attendance → Field Visit → Reimbursement → Payroll → Payslip**
+
+## Business
+
+**Lead → Client → Quotation → Agreement → Project/Service → Invoice → Payment**
+
+## Field Force
+
+**Employee → Field Visit → Lead/Client → Meeting → Outcome → Follow-up → Daily Activity → Expense → Reimbursement**
+
+---
+
+# 59. MAIN SIDEBAR
+
+The sidebar should be role-based.
+
+### Dashboard
+
+### CRM
+- Leads
+- Clients
+- Follow-ups
+- Client Activities
+- Field Visits
+
+### HR
+- Employees
+- Departments
+- Designations
+- Attendance
+- Leave
+- Daily Activity
+- Field Force
+- Reimbursements
+- Payroll
+- Payslips
+- Documents
+
+### Projects
+- Projects
+- Tasks
+- Project Activity
+- Team Allocation
+- Client Meetings
+
+### Sales
+- Quotations
+- Agreements
+- Services
+
+### Finance
+- Invoices
+- Payments
+- Expenses
+- Reimbursements
+
+### Reports
+
+### Notifications
+
+### Settings
+
+### Audit Logs
+
+Only show modules the logged-in user has permission to access.
+
+---
+
+# 60. IMPORTANT BUSINESS RULES
+
+1. Login automatically creates attendance check-in.
+2. Logout automatically creates attendance check-out.
+3. Working hours are calculated automatically.
+4. Attendance rules are configurable.
+5. Attendance corrections require authorization.
+6. Field Force is a major integrated module.
+7. Employees can record client/lead visits.
+8. Field visits record start/end time and meeting information.
+9. Field visits connect to CRM, projects and daily activity.
+10. Field expenses connect to reimbursements.
+11. Reimbursements require approval.
+12. Reimbursement should remain separate from salary while being available as a payroll input where required.
+13. Payslips must be generated using the official company letterhead.
+14. Company logo and information must appear on official documents.
+15. Client is optional for internal projects/tasks/activity.
+16. Every major module must have a clear + Add button.
+17. HR manages employees, designations, salary and HR records.
+18. Managers see their team's work and attendance.
+19. Project Managers see project-related work.
+20. Employees update their own daily activity.
+21. CRM and ERP must be connected.
+22. Lead conversion must preserve history.
+23. Client/project/task/invoice/payment relationships must be maintained.
+24. All modules require appropriate search and filters.
+25. Backend permissions are mandatory.
+26. Sensitive employee and salary information must be protected.
+27. Important changes must be audited.
+28. Avoid duplicate data entry.
+29. Use relationships between records instead of duplicating information.
+30. All official PDFs must follow the **Priority Ads Agency letterhead format provided in the reference images**.
+
+---
+
+# 61. FINAL REQUIREMENT
+
+Build the application as a **single integrated platform**, not as separate modules.
+
+The system must allow management to answer:
+
+- Who is working today?
+- When did they log in?
+- When did they log out?
+- How many hours did they work?
+- Which project are they working on?
+- Which task are they working on?
+- What did they complete today?
+- Who is their manager?
+- Who is their Project Manager?
+- Which employees are assigned to a project?
+- Who is currently in the field?
+- Which client/lead did they visit?
+- When did they visit?
+- What was discussed?
+- What was the outcome?
+- What follow-up is required?
+- What field expenses were incurred?
+- Was the reimbursement approved?
+- What salary should be processed?
+- Has the payslip been generated?
+- Which leads became clients?
+- Which clients have active projects?
+- Which projects are active?
+- Which quotations were accepted?
+- Which invoices are unpaid?
+- How much has been received?
+- What are the company expenses?
+- What is the overall business position?
+
+The final system should provide a **single source of truth** for the entire company.
+
+## MOST IMPORTANT
+
+Use the uploaded **Priority Ads Agency logo and letterhead design as the official visual/document reference**.
+
+Do not redesign the document format.
+
+Keep the same professional **blue + yellow/gold Priority Ads Agency branding, header, footer, logo placement, company information and overall document appearance** for all generated official documents.
+
+Only the document content should change.

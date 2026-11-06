@@ -1,0 +1,6 @@
+{
+  "name": "Priority Ads Agency ERP & Productivity Suite",
+  "description": "Comprehensive ERP, CRM, HRMS, Field Force, Attendance, Payroll, and Analytics platform with dark mode for Priority Ads Agency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
