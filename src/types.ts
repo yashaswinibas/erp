@@ -283,6 +283,7 @@ export interface Reimbursement {
   fieldVisitId?: string;
   paymentMethod: string;
   receiptName?: string;
+  proofFiles?: { fileId: string; fileName: string; mimeType: string; size: number }[]; // AGENCYOS_V2_PART12
   remarks?: string;
   status: 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'paid';
   reviewedBy?: string;

@@ -43,6 +43,7 @@ export const TAB_ACCESS: Record<string, string[]> = {
   field_force: [SA, AD, MG, PM, EM],
   field_gps: [SA, AD, HR, MG, PM, EM],
   reimbursements: ALL,
+  client_reimbursements: [SA, AD, FN, MG, PM],
   audit_settings: [SA, AD],
   access_admin: ALL,
 };

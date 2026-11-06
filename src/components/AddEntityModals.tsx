@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { X, CheckCircle, Shield, Plus, Trash2 } from 'lucide-react';
 import { FieldVisitType, ReimbursementCategory, WorkMode, UserRole } from '../types';
+import { saveFile } from '../lib/fileStore'; // AGENCYOS_V2_PART12
+import { StoredFile } from '../lib/hrTypes';
+import { ProofThumbs } from './ProofThumbs';
 
 interface AddEntityModalsProps {
   modalType: string | null;
@@ -602,21 +605,32 @@ const ReimbursementModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('UPI / Direct Bank');
   const [projectId, setProjectId] = useState('');
   const [clientId, setClientId] = useState('');
+  const [expDate, setExpDate] = useState(new Date().toISOString().split('T')[0]);
+  const [proofs, setProofs] = useState<StoredFile[]>([]);
+  const [proofErr, setProofErr] = useState('');
+  const addProofs = async (list: FileList | null) => {
+    if (!list?.length) return;
+    setProofErr('');
+    try { const s: StoredFile[] = []; for (const f of Array.from(list)) s.push(await saveFile(f)); setProofs((p) => [...p, ...s]); }
+    catch (er) { setProofErr((er as Error).message); }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description || !amount) return;
+    if (proofs.length === 0) { setProofErr('Please attach a photo or PDF of the bill / receipt as proof.'); return; }
 
     addReimbursement({
       employeeId: currentUser.id,
-      date: new Date().toISOString().split('T')[0],
+      date: expDate,
       category,
       amount: Number(amount),
       description,
       projectId: projectId || undefined,
       clientId: clientId || undefined,
       paymentMethod,
-      receiptName: 'scanned_voucher.pdf'
+      receiptName: proofs[0]?.fileName,
+      proofFiles: proofs
     });
     onClose();
   };
@@ -691,6 +705,43 @@ const ReimbursementModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               {clients.map(c => <option key={c.id} value={c.id}>{c.companyName}</option>)}
             </select>
           </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Expense Date *</label>
+            <input type="date" required value={expDate} max={new Date().toISOString().split('T')[0]} onChange={e => setExpDate(e.target.value)} className="w-full p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" />
+          </div>
+          <div>
+            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Payment Method</label>
+            <input value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)} className="w-full p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" />
+          </div>
+        </div>
+
+        <div className={`rounded-xl border-2 border-dashed p-4 ${proofErr ? 'border-rose-400 bg-rose-50/50 dark:bg-rose-950/20' : 'border-slate-300 dark:border-slate-700'}`}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="font-semibold text-slate-800 dark:text-slate-200">Proof of expense *</div>
+              <div className="text-[11px] text-slate-500">Photo of the bill / receipt / ticket, or a PDF. Max 10 MB each.</div>
+            </div>
+            <div className="flex gap-2">
+              <label className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold cursor-pointer">Take photo
+                <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => { addProofs(e.target.files); e.target.value = ''; }} /></label>
+              <label className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 font-bold cursor-pointer text-slate-700 dark:text-slate-200">Upload file
+                <input type="file" accept="image/*,.pdf" multiple className="hidden" onChange={e => { addProofs(e.target.files); e.target.value = ''; }} /></label>
+            </div>
+          </div>
+          {proofs.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-3">
+              {proofs.map(p => (
+                <div key={p.fileId} className="relative">
+                  <ProofThumbs files={[p]} size={64} showNames={false} />
+                  <button type="button" title="Remove" onClick={() => setProofs(x => x.filter(y => y.fileId !== p.fileId))} className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold cursor-pointer">x</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {proofErr && <p className="mt-2 text-rose-600 font-semibold">{proofErr}</p>}
         </div>
 
         <ModalFooter onClose={onClose} submitLabel="Submit for HR / Finance Approval" />

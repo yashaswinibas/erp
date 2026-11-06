@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { ProofThumbs } from './ProofThumbs'; // AGENCYOS_V2_PART12
 import { Reimbursement, Payslip, Employee } from '../types';
 import {
   Receipt,
@@ -395,11 +396,15 @@ export const ReimbursementsPayrollModule: React.FC<{
                             <p className="text-slate-800 dark:text-slate-200 line-clamp-2">
                               {rmb.description}
                             </p>
-                            {rmb.receiptName && (
-                              <div className="flex items-center gap-1 mt-1 text-[11px] text-blue-600 dark:text-blue-400 font-mono font-medium">
+                            {rmb.proofFiles && rmb.proofFiles.length > 0 ? (
+                              <ProofThumbs files={rmb.proofFiles} size={48} />
+                            ) : rmb.receiptName ? (
+                              <div className="flex items-center gap-1 mt-1 text-[11px] text-slate-500 font-mono font-medium" title="Sample data - no file uploaded">
                                 <FileText className="w-3 h-3" />
                                 <span>{rmb.receiptName}</span>
                               </div>
+                            ) : (
+                              <div className="mt-1 text-[11px] font-bold text-rose-600">No proof attached</div>
                             )}
                             {rmb.approvalRemarks && (
                               <div className="text-[10px] text-slate-500 italic mt-0.5">
@@ -444,7 +449,7 @@ export const ReimbursementsPayrollModule: React.FC<{
                               {canApprove && (rmb.status === 'submitted' || rmb.status === 'under_review') && (
                                 <>
                                   <button
-                                    onClick={() => reviewReimbursement(rmb.id, 'approved', `Approved by ${currentUser.name}`)}
+                                    onClick={() => { if (!(rmb.proofFiles && rmb.proofFiles.length) && !confirm('This claim has no uploaded proof (bill photo). Approve anyway?')) return; reviewReimbursement(rmb.id, 'approved', `Approved by ${currentUser.name}`); }}
                                     className="px-2.5 py-1 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-lg shadow-xs cursor-pointer transition-colors"
                                   >
                                     Approve

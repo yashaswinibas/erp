@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RoleLogin } from './components/RoleLogin'; // AGENCYOS_V2_PART4
 import { AccessAdmin, ForcePasswordChange } from './components/AccessAdmin';
 import { FinanceDashboard } from './components/FinanceDashboard';
+import { ClientReimbursementModule } from './components/ClientReimbursementModule'; // AGENCYOS_V2_PART11
 import { canAccess, homeTab, ROLE_LABEL } from './lib/rbac';
 import { AppProvider, useApp } from './context/AppContext';
 import { RoleDashboardView } from './components/RoleDashboardView';
@@ -816,7 +817,20 @@ function MainApp() {
                   }`}
                 >
                   <DollarSign className="w-4 h-4 text-slate-400 shrink-0" />
-                  <span>Reimbursements & Pay</span>
+                  <span>Employee Reimbursement</span>
+                </button>
+
+                <button
+                  hidden={!canAccess(currentRole, 'client_reimbursements')}
+                  onClick={() => { setActiveTab('client_reimbursements'); setSidebarOpen(false); }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer text-left ${
+                    activeTab === 'client_reimbursements'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  }`}
+                >
+                  <CheckSquare className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>Client Reimbursement</span>
                 </button>
               </div>
             )}
@@ -997,6 +1011,7 @@ function MainApp() {
           <ForcePasswordChange />
           {allowed && activeTab === 'finance_desk' && <FinanceDashboard onOpen={setActiveTab} />}
           {allowed && activeTab === 'access_admin' && <AccessAdmin />}
+          {allowed && activeTab === 'client_reimbursements' && <ClientReimbursementModule />}
           {allowed && activeTab.startsWith('deals_') && <DealsModule initialTab={activeTab.slice(6) as DealsTab} />}
           {allowed && activeTab === 'field_gps' && <FieldGpsModule />}
           {allowed && activeTab === 'field_force' && (
