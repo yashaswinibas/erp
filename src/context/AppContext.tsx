@@ -1,4 +1,6 @@
+// AGENCYOS_V4_P25_DONE
 import { homeTab } from '../lib/rbac'; // AGENCYOS_V2_PART4
+import { osGuard } from '../os/osP25';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import {
   UserRole,
@@ -1391,7 +1393,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   return (
     <AppContext.Provider
-      value={{
+      value={osGuard({
         theme,
         toggleTheme,
         company,
@@ -1475,7 +1477,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         docPreview,
         openDocument,
         closeDocument
-      }}
+      })}
     >
       {children}
     </AppContext.Provider>

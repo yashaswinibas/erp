@@ -1,3 +1,5 @@
+// AGENCYOS_V5_P26_DONE
+// AGENCYOS_V4_P25_DONE
 export type UserRole =
   | 'super_admin'
   | 'admin'
@@ -5,7 +7,30 @@ export type UserRole =
   | 'manager'
   | 'project_manager'
   | 'employee'
-  | 'finance';
+  | 'finance'
+  // AGENCYOS_V3_OS roles
+  | 'sales_manager'
+  | 'sales_executive'
+  | 'operations_manager'
+  | 'client_relationship_manager'
+  | 'team_leader'
+  | 'freelancer'
+  | 'auditor'
+  // AGENCYOS_V4_P25 sub-roles
+  | 'recruiter'
+  | 'hr_executive'
+  | 'accountant'
+  | 'billing_executive'
+  | 'sales_team_leader'
+  | 'telecaller'
+  | 'client_support_executive'
+  | 'project_coordinator'
+  | 'consultant'
+  | 'vendor'
+  // AGENCYOS_V5_P26 roles
+  | 'business_development'
+  | 'intern'
+  | 'automation_specialist';
 
 export type WorkMode = 'office' | 'wfh' | 'field' | 'client_site';
 
@@ -172,7 +197,7 @@ export interface DailyActivity {
   createdAt: string;
 }
 
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'won' | 'lost';
+export type LeadStatus = 'new' | 'assigned' | 'contacted' | 'follow_up' | 'qualified' | 'proposal' | 'negotiation' | 'won' | 'lost';
 
 export interface Lead {
   id: string;

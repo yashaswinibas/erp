@@ -1,14 +1,17 @@
+// AGENCYOS_V4_P25_DONE
 // AGENCYOS_V2_PART19 + AGENCYOS_V2_PART23: who sees whose data.
 // Employee: only own tasks, projects, visits, leads and claims.
 // Claims: everyone's claims only if "view all claims" is ON for the role in the Permission matrix.
 import { canAccess } from './rbac';
+import { isStaffRole } from '../os/osConfig'; // AGENCYOS_V3_OS
+import { isTeamLeadRole, scopeTeam } from '../os/osP25';
 export function scopeForStaff<T>(app: T): T {
   const a = app as any;
   if (!a) return app;
   const me = a.currentUser?.id;
   const myClaims = (a.reimbursements || []).filter((r: any) => r.employeeId === me);
   const allClaims = canAccess(a.currentRole, 'view_all_claims');
-  if (a.currentRole === 'employee') {
+  if (isStaffRole(a.currentRole)) {
     const myTasks = (a.tasks || []).filter((t: any) => t.assignedEmployeeId === me);
     const myProjectIds = new Set(myTasks.map((t: any) => t.projectId));
     return {
@@ -20,5 +23,6 @@ export function scopeForStaff<T>(app: T): T {
       reimbursements: allClaims ? a.reimbursements : myClaims,
     } as T;
   }
+  if (isTeamLeadRole(a.currentRole)) return { ...scopeTeam<any>(a), reimbursements: allClaims ? a.reimbursements : myClaims } as T;
   return allClaims ? app : ({ ...a, reimbursements: myClaims } as T);
 }

@@ -1,6 +1,7 @@
-﻿// Role-based access rules (Phase 1 - browser side). The same table will be
+// Role-based access rules (Phase 1 - browser side). The same table will be
 // enforced again on the server when the backend is added.
 import { UserRole } from '../types';
+import { osCanAccess, osHome, setOsFieldAccess, OS_ROLES } from '../os/osConfig'; // AGENCYOS_V3_OS
 
 export type LoginPortal = 'super_admin' | 'admin' | 'hr' | 'manager' | 'project_manager' | 'finance' | 'employee';
 
@@ -14,9 +15,7 @@ export const PORTALS: { id: LoginPortal; title: string; subtitle: string; roles:
   { id: 'employee', title: 'Employee', subtitle: 'My attendance, tasks & payslips', roles: ['employee'], color: 'from-slate-600 to-slate-800' },
 ];
 
-export const ROLE_LABEL: Record<string, string> = {
-  super_admin: 'Super Admin', admin: 'Owner / Admin', hr: 'HR', manager: 'Manager', project_manager: 'Manager (Projects)', finance: 'Finance', employee: 'Employee',
-};
+export const ROLE_LABEL: Record<string, string> = Object.fromEntries(OS_ROLES.map((r) => [r.id, r.label]));
 
 const SA = 'super_admin', AD = 'admin', HR = 'hr', MG = 'manager', PM = 'project_manager', FN = 'finance', EM = 'employee';
 const ALL = [SA, AD, HR, MG, PM, FN, EM];
@@ -65,15 +64,18 @@ TAB_ACCESS.view_all_claims = [SA, AD, FN]; // see everyone's claims (others see 
 // Field screens are only for employees who work in the field.
 export const FIELD_TABS = ['field_force_desk', 'field_force', 'field_gps'];
 let FIELD_OK = true;
-export const setFieldAccess = (ok: boolean) => { FIELD_OK = ok; };
+export const setFieldAccess = (ok: boolean) => { FIELD_OK = ok; setOsFieldAccess(ok); };
 export const PERM_KEY = 'paa_x_perm_overrides';
 export const LOCKED_TABS = ['access_admin'];
 export const defaultAccess = (tab: string) => TAB_ACCESS[tab] || [SA, AD];
 export const readOverrides = (): Record<string, string[]> => { try { return JSON.parse(localStorage.getItem(PERM_KEY) || '{}') || {}; } catch { return {}; } };
 export const effectiveAccess = (tab: string, ov: Record<string, string[]> = readOverrides()) => Array.isArray(ov[tab]) ? ov[tab] : defaultAccess(tab);
-export const canAccess = (role: string, tab: string) => role === EM && !FIELD_OK && FIELD_TABS.includes(tab) ? false : role === SA || LOCKED_TABS.includes(tab) ? defaultAccess(tab).includes(role) : effectiveAccess(tab).includes(role);
+// access now comes from the AgencyOS permission matrix (os/osConfig.ts)
+export const canAccess = (role: string, tab: string) => osCanAccess(role, tab);
+export const legacyCanAccess = (role: string, tab: string) => role === EM && !FIELD_OK && FIELD_TABS.includes(tab) ? false : role === SA || LOCKED_TABS.includes(tab) ? defaultAccess(tab).includes(role) : effectiveAccess(tab).includes(role);
 
-export const homeTab = (role: string, fieldWorker = false) =>
+export const homeTab = (role: string, _fieldWorker = false) => osHome(role);
+export const legacyHomeTab = (role: string, fieldWorker = false) =>
   role === SA || role === AD ? 'owner_desk'
     : role === HR ? 'hr_desk'
     : role === FN ? 'finance_desk'

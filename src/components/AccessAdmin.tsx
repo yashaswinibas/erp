@@ -1,4 +1,5 @@
-﻿// Users & Login: change password, roles, password resets, deactivate users, login history, permission matrix.
+// Users & Login: change password, roles, password resets, deactivate users, login history, permission matrix.
+import { OS_ROLES } from '../os/osConfig';
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { UserRole } from '../types';
@@ -7,7 +8,7 @@ import { can, ROLE_LABEL, TAB_ACCESS, DEFAULT_PASSWORD, hashPassword, Credential
 import { useShared, nowStamp } from '../lib/sharedStore';
 import { inputCls, btnPrimary, btnGhost, btnGood, btnBad, card, th, td, Badge, Field, Tabs, Empty, Modal } from './ui2';
 
-const ROLES: UserRole[] = ['super_admin', 'admin', 'hr', 'manager', 'project_manager', 'finance', 'employee'];
+const ROLES: UserRole[] = OS_ROLES.map((r) => r.id as UserRole); // AGENCYOS_V3_OS
 const pwRule = (p: string) => (p.length < 8 ? 'At least 8 characters.' : !/[A-Za-z]/.test(p) || !/\d/.test(p) ? 'Use letters and numbers.' : '');
 
 const ChangePassword: React.FC<{ onDone?: () => void; forced?: boolean }> = ({ onDone, forced }) => {
@@ -88,7 +89,7 @@ export const AccessAdmin: React.FC = () => {
 
   const tabs: [string, string][] = [['me', 'My password'], ['history', 'Login history']];
   if (resetter) tabs.splice(1, 0, ['users', 'Users & roles'], ['resets', `Reset requests (${resets.filter((r) => r.status === 'open').length})`]);
-  if (manage) tabs.push(['matrix', 'Permission matrix']);
+  // permissions moved to Administration > Permission Matrix
   const visibleHistory = (resetter ? history : history.filter((h) => h.employeeId === currentUser.id)).filter((h) => !q || `${h.name} ${h.role} ${h.portal}`.toLowerCase().includes(q.toLowerCase()));
 
   return (
