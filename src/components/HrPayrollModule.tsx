@@ -1,4 +1,4 @@
-﻿// AgencyOS v2: Employee onboarding, documents, contracts, salary structure,
+// AgencyOS v2: Employee onboarding, documents, contracts, salary structure,
 // bank details, monthly attendance finalisation, payroll and payslips.
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
@@ -137,7 +137,8 @@ export const HrPayrollModule: React.FC<{ initialTab?: Tab }> = ({ initialTab = '
   const emp = (id: string) => employees.find((e) => e.id === id);
   const deptName = (e?: Employee) => departments.find((d) => d.id === e?.departmentId)?.name;
   const desigName = (e?: Employee) => designations.find((d) => d.id === e?.designationId)?.title;
-  const activeEmployees = employees.filter((e) => e.status !== 'inactive');
+  // AGENCYOS_PAYROLL_SKIP_TEST: demo role-login accounts (emp-role-*) are not paid and do not block payroll
+  const activeEmployees = employees.filter((e) => e.status !== 'inactive' && !String(e.id).startsWith('emp-role-'));
 
   // ---------- onboarding ----------
   const getOnboarding = (empId: string): OnboardingRecord =>
