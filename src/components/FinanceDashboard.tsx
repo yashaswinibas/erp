@@ -1,4 +1,5 @@
-﻿// Separate Finance dashboard: revenue, collections, pending collections, expenses,
+// AGENCYOS_SALARY_LINK: payslips show in Finance Overview as soon as they are generated
+// Separate Finance dashboard: revenue, collections, pending collections, expenses,
 // salary expenditure, net operating margin, pending payments, monthly summary.
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
@@ -43,17 +44,17 @@ export const FinanceDashboard: React.FC<{ onOpen?: (tab: string) => void }> = ({
     ipays.forEach((p) => { const unalloc = p.amount - p.allocations.reduce((s, a) => s + a.amount, 0); if (unalloc > 0.01) add(p.date, 'collected', unalloc); });
     expenses.forEach((e) => add(e.date, 'expenses', e.amount));
     reimbursements.filter((r) => r.status === 'paid').forEach((r) => add(r.paidDate || r.date, 'expenses', r.amount));
-    runs.forEach((r) => { if (['approved', 'partially_paid', 'paid'].includes(r.status)) { const d = `${r.year}-${String(r.month).padStart(2, '0')}-01`; add(d, 'salary', r.slips.reduce((s, x) => s + x.gross + x.employerPf + x.employerEsi, 0)); } });
+    runs.forEach((r) => { if (['calculated', 'approved', 'partially_paid', 'paid'].includes(r.status)) { const d = `${r.year}-${String(r.month).padStart(2, '0')}-01`; add(d, 'salary', r.slips.reduce((s, x) => s + x.gross + x.employerPf + x.employerEsi, 0)); } });
 
     const sel = month ? months.filter((x) => x.m === month) : months;
     const sum = (k: 'revenue' | 'collected' | 'expenses' | 'salary') => round2(sel.reduce((s, x) => s + x[k], 0));
     const pendingCollections = round2(validInv.reduce((s, i) => s + (i.balanceAmount || 0), 0)
       + inst.filter((i) => !i.invoiceId).reduce((s, i) => s + Math.max(0, i.amount - ipays.reduce((t, p) => t + p.allocations.filter((a) => a.installmentId === i.id).reduce((u, a) => u + a.amount, 0), 0)), 0));
     const overdueCollections = round2(validInv.filter((i) => i.balanceAmount > 0 && i.dueDate < today).reduce((s, i) => s + i.balanceAmount, 0));
-    const unpaidSalaries = round2(runs.filter((r) => ['approved', 'partially_paid'].includes(r.status)).reduce((s, r) => s + r.slips.filter((x) => x.paymentStatus !== 'paid').reduce((t, x) => t + x.net, 0), 0));
+    const unpaidSalaries = round2(runs.filter((r) => ['calculated', 'approved', 'partially_paid'].includes(r.status)).reduce((s, r) => s + r.slips.filter((x) => x.paymentStatus !== 'paid').reduce((t, x) => t + x.net, 0), 0));
     const unpaidClaims = round2(reimbursements.filter((r) => r.status === 'approved').reduce((s, r) => s + r.amount, 0));
     return { months, revenue: sum('revenue'), collected: sum('collected'), expenses: sum('expenses'), salary: sum('salary'), pendingCollections, overdueCollections, unpaidSalaries, unpaidClaims };
-  }, [invoices, payments, expenses, reimbursements, year, month, runs.length, inst.length, ipays.length]);
+  }, [invoices, payments, expenses, reimbursements, year, month, localStorage.getItem('paa_x_payroll_runs'), inst.length, ipays.length]);
 
   const opex = data.expenses + data.salary;
   const margin = round2(data.revenue - opex);
@@ -97,7 +98,7 @@ export const FinanceDashboard: React.FC<{ onOpen?: (tab: string) => void }> = ({
         <Kpi label="Total expenses" value={inrShort(data.expenses)} sub="Expenses + paid claims" tone="text-rose-600" go="billing" />
         <Kpi label="Salary expenditure" value={inrShort(data.salary)} sub="Gross + employer PF/ESI" go="hr_payroll" />
         <Kpi label="Net operating margin" value={inrShort(margin)} sub={`${marginPct}% of revenue`} tone={margin >= 0 ? 'text-emerald-600' : 'text-rose-600'} />
-        <Kpi label="Salaries to pay" value={inrShort(data.unpaidSalaries)} sub="Approved, not yet paid" tone="text-amber-600" go="hr_payroll" />
+        <Kpi label="Salaries to pay" value={inrShort(data.unpaidSalaries)} sub="Payslips generated, not yet paid" tone="text-amber-600" go="hr_payroll" />
         <Kpi label="Claims to pay" value={inrShort(data.unpaidClaims)} sub="Approved reimbursements" tone="text-amber-600" go="reimbursements" />
       </div>
       <div className={card}>
