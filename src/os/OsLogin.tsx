@@ -1,10 +1,13 @@
-﻿// AGENCYOS_V3_OS: login screen (prototype design) with real password check, lockout and reset request
+// AGENCYOS_DB_DONE
+// AGENCYOS_V3_OS: login screen (prototype design) with real password check, lockout and reset request
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { readKey, writeKey, uid, nowStamp } from '../lib/sharedStore';
 import { DEFAULT_PASSWORD, hashPassword, Credential, LoginEvent, ResetRequest, CRED_KEY, LOGIN_LOG_KEY, RESET_KEY } from '../lib/rbac';
 import { Icon } from './icons';
 import { roleLabel } from './osConfig';
+import { dbEnabled, dbLogin } from '../lib/dbSync';
+import { DbSetup } from './DbSetup';
 
 export const OsLogin: React.FC = () => {
   const { employees, login } = useApp();
@@ -16,6 +19,7 @@ export const OsLogin: React.FC = () => {
 
   const submit = async (ev: React.FormEvent) => {
     ev.preventDefault(); setErr(''); setInfo('');
+    if (dbEnabled()) { if (!id.trim() || !pw) return setErr('Enter your work email / employee ID and password.'); if (remember) localStorage.setItem('paa_x_remember', id.trim()); else localStorage.removeItem('paa_x_remember'); setBusy(true); const e = await dbLogin(id.trim(), pw, remember); setBusy(false); if (e) setErr(e); return; }
     const key = id.trim().toLowerCase();
     if (!key || !pw) return setErr('Enter your work email / employee ID and password.');
     const emp = employees.find((e) => e.email.toLowerCase() === key || e.employeeId.toLowerCase() === key);
@@ -76,6 +80,7 @@ export const OsLogin: React.FC = () => {
             <a href="#" onClick={requestReset} style={{ color: '#2458A6', textDecoration: 'none' }}>Forgot password?</a></div>
           {err && <div className="notice" style={{ background: '#FEEDEC', borderColor: '#F8D5D1', color: '#B42318' }}><Icon name="lock" size={16} /><div>{err}</div></div>}
           {info && <div className="notice neutral"><Icon name="check" size={16} /><div>{info}</div></div>}
+          <DbSetup />
           <button className="primary-button" type="submit" disabled={busy}>{busy ? 'Checking\u2026' : 'Sign In'} <Icon name="arrow" size={15} /></button>
           <div className="role-demo"><small>Your dashboard opens automatically for your role. You only see the screens your role is allowed to use.</small>
             <div className="tiny-note">{match ? <>Account found: <b>{match.name}</b> {'\u00B7'} {roleLabel(match.role)}</> : 'First login password is given by HR. You will set your own password after signing in.'}</div></div>

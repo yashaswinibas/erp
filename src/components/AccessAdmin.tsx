@@ -1,9 +1,11 @@
+// AGENCYOS_DB_DONE
 // Users & Login: change password, roles, password resets, deactivate users, login history, permission matrix.
 import { OS_ROLES } from '../os/osConfig';
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { UserRole } from '../types';
 import { PERM_KEY, LOCKED_TABS, defaultAccess, effectiveAccess } from '../lib/rbac'; // AGENCYOS_V2_PART14
+import { dbEnabled, dbChangePassword } from '../lib/dbSync';
 import { can, ROLE_LABEL, TAB_ACCESS, DEFAULT_PASSWORD, hashPassword, Credential, LoginEvent, ResetRequest, CRED_KEY, LOGIN_LOG_KEY, RESET_KEY } from '../lib/rbac';
 import { useShared, nowStamp } from '../lib/sharedStore';
 import { inputCls, btnPrimary, btnGhost, btnGood, btnBad, card, th, td, Badge, Field, Tabs, Empty, Modal } from './ui2';
@@ -19,7 +21,8 @@ const ChangePassword: React.FC<{ onDone?: () => void; forced?: boolean }> = ({ o
   const save = async () => {
     const mine = creds.find((c) => c.employeeId === currentUser.id);
     const curHash = await hashPassword(f.cur);
-    if (curHash !== (mine?.hash ?? (await hashPassword(DEFAULT_PASSWORD)))) return setMsg('Current password is wrong.');
+    if (dbEnabled()) { const r0 = pwRule(f.nw); if (r0) return setMsg(r0); if (f.nw !== f.cf) return setMsg('New passwords do not match.'); const er = await dbChangePassword(f.cur, f.nw); if (er) return setMsg(er); }
+    else if (curHash !== (mine?.hash ?? (await hashPassword(DEFAULT_PASSWORD)))) return setMsg('Current password is wrong.');
     const rule = pwRule(f.nw); if (rule) return setMsg(rule);
     if (f.nw !== f.cf) return setMsg('New passwords do not match.');
     if (f.nw === f.cur) return setMsg('New password must be different.');

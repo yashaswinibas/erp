@@ -1,3 +1,4 @@
+// AGENCYOS_DB_DONE
 // AGENCYOS_V5_P26_DONE
 // AGENCYOS_V4_P25_DONE
 import React, { useState, useEffect } from 'react';
@@ -92,6 +93,7 @@ function MainApp() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => { if (theme === 'dark') toggleTheme(); }, [theme]); // light theme only
   setExportCtx(currentRole, activeTab); installExportGuard();
+  useEffect(() => { const em = sessionStorage.getItem('paa_x_db_autologin'); if (em) { sessionStorage.removeItem('paa_x_db_autologin'); login(em); } }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
 
   // Collapsible sidebar sections
