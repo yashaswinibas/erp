@@ -1,3 +1,4 @@
+// AGENCYOS_HR_OFFER
 // AGENCYOS_V2_PART17
 ﻿// Printable documents: opens a clean A4 page and the print dialog,
 // where the user can choose "Save as PDF".
@@ -5,6 +6,7 @@ import { CompanyConfig } from '../types';
 import { inr, rupeesInWords } from './money';
 import { fmtDate } from './dates';
 import { LH_CSS, wrapLetterhead } from './letterhead';
+import { letterPage, openBrandDoc } from './brandDocs';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
@@ -85,6 +87,7 @@ ${d.employerPf || d.employerEsi ? `<p style="font-size:10.5px;color:#64748b;marg
 }
 
 export function printLetter(c: CompanyConfig, title: string, body: string) {
-  printHtml(title, c, `<h2>${esc(title)}</h2><div class="body">${esc(body)}</div>
-<div class="sign"><div>For ${esc(c.name)}<br><br><br>Authorised signatory</div><div>Accepted by<br><br><br>Signature &amp; date</div></div>`);
+  const inner = `<div><div></div><h2>${esc(title)}</h2><div style="white-space:pre-wrap;line-height:1.65">${esc(body)}</div>
+<div style="display:flex;justify-content:space-between;margin-top:48px"><div>For ${esc(c.name)}<br><br><br>Authorised signatory</div><div>Accepted by<br><br><br>Signature &amp; date</div></div></div>`;
+  openBrandDoc(title, letterPage(inner, '', new Date().toISOString().slice(0, 10)), false);
 }

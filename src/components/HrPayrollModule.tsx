@@ -1,3 +1,4 @@
+// AGENCYOS_HR_OFFER
 // AgencyOS v2: Employee onboarding, documents, contracts, salary structure,
 // bank details, monthly attendance finalisation, payroll and payslips.
 import React, { useMemo, useState } from 'react';
@@ -13,6 +14,9 @@ import { summariseMonth, calculatePayslip, DayKind } from '../lib/payrollCalc';
 import { inr, round2 } from '../lib/money';
 import { localDate, daysInMonth, MONTH_NAMES, fmtDate, addDaysIso } from '../lib/dates';
 import { printPayslip, printLetter } from '../lib/print';
+import { TEMPLATES as DOC_TEMPLATES } from '../lib/docTemplates';
+import { docHtml } from './DocumentCenter';
+import { letterPage, openBrandDoc } from '../lib/brandDocs';
 
 // ---------- small UI helpers (Tailwind, matches the rest of the app) ----------
 const inputCls = 'w-full px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs';
@@ -137,6 +141,29 @@ export const HrPayrollModule: React.FC<{ initialTab?: Tab }> = ({ initialTab = '
   const emp = (id: string) => employees.find((e) => e.id === id);
   const deptName = (e?: Employee) => departments.find((d) => d.id === e?.departmentId)?.name;
   const desigName = (e?: Employee) => designations.find((d) => d.id === e?.designationId)?.title;
+  // full offer letter in the official format, filled from the employee + salary structure
+  const printOffer = (c: { id: string; employeeId: string; title: string; body: string; ctcAnnual?: number; startDate?: string; createdAt: string }) => {
+    const e = emp(c.employeeId); const t = DOC_TEMPLATES.find((x) => x.id === 'offer_letter');
+    if (!e || !t || !t.salary) { printLetter(company, c.title, c.body); return; }
+    const s = structureFor(c.employeeId, '9999-12-31');
+    const earn = (s?.lines || []).filter((l) => l.kind === 'earning');
+    const basic = earn.find((l) => l.code === 'BASIC')?.value || 0;
+    const amt = (l: { calc: string; value: number }) => (l.calc === 'percent_of_basic' ? (basic * l.value) / 100 : l.value);
+    const pick = (codes: string[]) => earn.filter((l) => codes.includes(l.code)).reduce((a, l) => a + amt(l), 0);
+    const hra = pick(['HRA']), conv = pick(['CONV', 'CONVEYANCE', 'TRANSPORT']), med = pick(['MEDICAL', 'MED']), lta = pick(['LTA']), bonus = pick(['PERFBONUS', 'BONUS']);
+    const special = earn.reduce((a, l) => a + amt(l), 0) - basic - hra - conv - med - lta - bonus;
+    const str = (x: number) => (x > 0 ? String(Math.round(x)) : '');
+    const mgr = employees.find((x) => x.id === (e as any).reportingManagerId);
+    const v: Record<string, string> = {
+      name: e.name, empId: e.employeeId, designation: desigName(e) || ' ', department: deptName(e) || ' ', address: (e as any).address || ' ', phone: e.phone || ' ',
+      joiningDate: c.startDate || e.joiningDate || '', location: 'Bengaluru', reportingTo: mgr?.name || 'your reporting manager', acceptBy: addDaysIso(c.createdAt, 7),
+      probation: '6', notice: '30', hrName: currentUser.name,
+      sBasic: str(basic), sHra: str(hra), sSpecial: str(special), sConv: str(conv), sMedical: str(med), sLta: str(lta), sBonus: str(bonus * 12),
+      ctc: c.ctcAnnual ? 'Rs. ' + Math.round(c.ctcAnnual).toLocaleString('en-IN') + ' per annum' : '',
+    };
+    const ref = 'PAA-HR-' + c.id.replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase();
+    openBrandDoc('Offer Letter - ' + e.name, letterPage(docHtml(t, v, company, 'Offer Letter', c.createdAt, ref, {}), ref, c.createdAt), false);
+  };
   // AGENCYOS_PAYROLL_SKIP_TEST: demo role-login accounts (emp-role-*) are not paid and do not block payroll
   const activeEmployees = employees.filter((e) => e.status !== 'inactive' && !String(e.id).startsWith('emp-role-'));
 
@@ -401,7 +428,7 @@ export const HrPayrollModule: React.FC<{ initialTab?: Tab }> = ({ initialTab = '
                       <td className={td}>{c.type}<div className="text-[10px] text-slate-400">Created {fmtDate(c.createdAt)}</div></td><td className={td}>v{c.version}</td>
                       <td className={td}>{fmtDate(c.startDate)} - {fmtDate(c.endDate)}</td><td className={td}><Badge v={c.status} /></td>
                       <td className={td}><div className="flex flex-wrap gap-1">
-                        <button className={btnGhost} onClick={() => printLetter(company, c.title, c.body)}>Print / PDF</button>
+                        <button className={btnGhost} onClick={() => (c.type === 'Offer Letter' ? printOffer(c) : printLetter(company, c.title, c.body))}>Print / PDF</button>
                         {c.status === 'draft' && <button className={btnGhost} onClick={() => setContracts((p) => p.map((x) => x.id === c.id ? { ...x, status: 'sent' } : x))}>Mark sent</button>}
                         {c.signedFile ? <button className={btnGhost} onClick={() => openStoredFile(c.signedFile!)}>Signed copy</button>
                           : <label className={`${btnGood} inline-block`}>Upload signed<input type="file" className="hidden" accept=".pdf,image/*" onChange={async (ev) => {
