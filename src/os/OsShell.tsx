@@ -1,4 +1,5 @@
-﻿// AGENCYOS_V3_OS: sidebar, top bar and page header (AgencyOS prototype layout)
+// AGENCYOS_LOGO
+// AGENCYOS_V3_OS: sidebar, top bar and page header (AgencyOS prototype layout)
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Icon } from './icons';
@@ -19,7 +20,7 @@ export const OsSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ op
     <>
       <div className={`backdrop ${open ? 'show' : ''}`} onClick={onClose} />
       <aside className={`sidebar ${open ? 'open' : ''}`}>
-        <div className="brand"><div className="brandline"><div className="mark">P</div><div><strong>Priority Ads Agency</strong><small>AgencyOS {'\u00B7'} Internal Workspace</small></div></div>
+        <div className="brand"><img src="/logo-wide.png" alt="Priority Ads Agency - Your success is our priority" style={{ width: '100%', maxWidth: 210, height: 'auto', display: 'block', margin: '0 auto' }} /><div className="tiny-note" style={{ textAlign: 'center', marginTop: 6 }}>AgencyOS {'\u00B7'} Internal Workspace</div>
           <div className="workspace-flag"><span className="dot" /> PRIORITY ADS AGENCY ONLY</div></div>
         <div className="nav-search"><Icon name="search" size={15} /><input placeholder="Search pages..." value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search pages" /></div>
         <div className="nav-scroll">

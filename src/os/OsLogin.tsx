@@ -1,3 +1,4 @@
+// AGENCYOS_LOGO
 // AGENCYOS_DB_DONE
 // AGENCYOS_V3_OS: login screen (prototype design) with real password check, lockout and reset request
 import React, { useState } from 'react';
@@ -61,7 +62,7 @@ export const OsLogin: React.FC = () => {
   return (
     <div className="login-screen">
       <div className="login-left">
-        <div className="brandline"><div className="mark">P</div><div><strong style={{ color: 'white', fontSize: 18 }}>Priority Ads Agency</strong><small style={{ color: '#B3C0DA' }}>AGENCYOS {'\u00B7'} INTERNAL OPERATIONS</small></div></div>
+        <div><div style={{ background: '#fff', borderRadius: 16, padding: '12px 18px', display: 'inline-block', boxShadow: '0 8px 24px #00000033' }}><img src="/logo-wide.png" alt="Priority Ads Agency - Your success is our priority" style={{ height: 78, width: 'auto', display: 'block' }} /></div><div style={{ color: '#B3C0DA', fontSize: 11, fontWeight: 700, letterSpacing: 1.2, marginTop: 10 }}>AGENCYOS {'\u00B7'} INTERNAL OPERATIONS</div></div>
         <div><div className="demo-tag" style={{ display: 'inline-block', background: '#273656', color: '#F6D77D', borderColor: '#43526B' }}>COMPANY OPERATING SYSTEM</div>
           <h1>One agency.<br /><span className="accent">Total operational clarity.</span></h1>
           <p>Clients, work, people, collections and decisions {'\u2014'} all in one secure company-owned operating system.</p></div>
