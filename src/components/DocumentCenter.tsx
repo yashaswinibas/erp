@@ -1,3 +1,4 @@
+// AGENCYOS_OFFER_V2
 // AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
 ﻿// Document Center: professional templates (client, HR, legal), live preview,
@@ -11,6 +12,7 @@ import { saveFile, openStoredFile } from '../lib/fileStore';
 import { StoredFile } from '../lib/hrTypes';
 import { fmtDate, localDate } from '../lib/dates';
 import { printHtml } from '../lib/print';
+import { offerValues, offerExtrasHtml } from '../lib/offerExtras';
 import { letterPage, openBrandDoc } from '../lib/brandDocs';
 import { BrandFrame } from './BrandFrame';
 import { TEMPLATES, DocTemplate, DocCategory, CAT_LABEL } from '../lib/docTemplates';
@@ -37,6 +39,7 @@ const statusOf = (t: DocTemplate, d: Pick<SavedDoc, 'agencySig' | 'partySig'>): 
 
 /** Builds the document HTML used for both the live preview and the PDF. */
 export function docHtml(t: DocTemplate, values: Record<string, string>, company: { name: string; address: string; stampUrl?: string }, title: string, docDate: string, ref: string, sigs: { agencySig?: Sig; partySig?: Sig }) {
+  values = offerValues(t, values);
   const fill = (s: string) => esc(s).replace(/\{\{(\w+)\}\}/g, (_, k: string) => {
     if (k === 'agency') return `<b>${esc(company.name)}</b>`;
     if (k === 'agencyAddress') return esc(company.address);
@@ -58,7 +61,7 @@ export function docHtml(t: DocTemplate, values: Record<string, string>, company:
   <div style="display:flex;justify-content:space-between;color:#64748b;font-size:11px;margin-bottom:6px"><span>Ref: ${esc(ref)}</span><span>Date: ${esc(fmtDate(docDate))}</span></div>
   <h2 style="text-align:center;font-size:17px;letter-spacing:.5px;text-transform:uppercase;margin:6px 0 16px">${esc(title || t.name)}</h2>
   <div style="line-height:1.65">${fill(t.intro)}</div>${secs}
-  <div style="display:flex;gap:40px;margin-top:44px;flex-wrap:wrap">${sigBox(`For ${company.name}`, 'Authorised Signatory', sigs.agencySig, company.stampUrl)}${t.signable ? sigBox(`${t.partyLabel}${party && party !== t.partyLabel ? ' - ' + party : ''}`, t.partyLabel, sigs.partySig) : ''}</div>
+  <div style="display:flex;gap:40px;margin-top:44px;flex-wrap:wrap">${sigBox(`For ${company.name}`, 'Authorised Signatory', sigs.agencySig, company.stampUrl)}${t.signable ? sigBox(`${t.partyLabel}${party && party !== t.partyLabel ? ' - ' + party : ''}`, t.partyLabel, sigs.partySig) : ''}</div>${offerExtrasHtml(t, values, fill)}
 </div>`;
 }
 
@@ -114,6 +117,7 @@ const Editor: React.FC<{ t: DocTemplate; doc?: SavedDoc }> = ({ t, doc }) => {
   const pickClient = (id: string) => { const c = clients.find((x) => x.id === id); if (!c) return; setValues((p) => ({ ...p, clientName: c.contactPerson, company: c.companyName, address: c.billingAddress || c.address })); };
   const pickEmp = (id: string) => {
     const e = employees.find((x) => x.id === id); if (!e) return;
+    setValues((p) => ({ ...p, phone: e.phone || p.phone || '', ...(e.salary ? { sBasic: String(e.salary.basic || ''), sHra: String(e.salary.hra || ''), sSpecial: String(e.salary.allowances || '') } : {}) }));
     const annual = e.salary ? (e.salary.basic + e.salary.hra + e.salary.allowances) * 12 : 0;
     setValues((p) => ({ ...p, name: e.name, empId: e.employeeId, designation: nameOf(designations, e.designationId), department: nameOf(departments, e.departmentId), joiningDate: e.joiningDate || p.joiningDate || '', fromDate: e.joiningDate || p.fromDate || '', ...(annual ? { ctc: 'Rs. ' + annual.toLocaleString('en-IN'), monthlyGross: 'Rs. ' + Math.round(annual / 12).toLocaleString('en-IN') } : {}) }));
   };

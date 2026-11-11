@@ -1,3 +1,4 @@
+// AGENCYOS_OFFER_V2
 // AGENCYOS_BRAND_DOCS
 // Document Center templates. Body text uses {{field}} placeholders.
 export type DocCategory = 'client' | 'hr' | 'legal' | 'other';
@@ -7,6 +8,7 @@ export interface DocTemplate {
   id: string; cat: DocCategory; name: string; desc: string; signable: boolean;
   party: 'client' | 'employee' | 'other'; partyLabel: string; fields: TField[];
   intro: string; sections: { h: string; p: string }[]; closing?: string;
+  annexA?: { h: string; p: string }[]; salary?: boolean; accept?: string;
 }
 
 const clientFields: TField[] = [
@@ -78,13 +80,37 @@ export const TEMPLATES: DocTemplate[] = [
       { h: 'Responsibility', p: 'The agency will act only within this authorisation and follow the platform policies.' }] },
 
   // ---------------- HR ----------------
-  { id: 'offer_letter', cat: 'hr', name: 'Offer Letter', desc: 'Job offer with role, joining date and compensation.', signable: true, party: 'employee', partyLabel: 'Candidate',
-    fields: [...empFields, { k: 'joiningDate', label: 'Joining date', type: 'date' }, { k: 'ctc', label: 'Annual CTC', ph: 'Rs. 4,20,000' }, { k: 'probation', label: 'Probation (months)', type: 'number', def: '6' }, { k: 'reportingTo', label: 'Reporting to' }, { k: 'location', label: 'Work location', def: 'Bengaluru' }],
-    intro: 'Dear {{name}},\nWe are pleased to offer you the position of {{designation}} in the {{department}} team at {{agency}}.',
-    sections: [{ h: 'Joining', p: 'Your date of joining will be {{joiningDate}} at our {{location}} office. You will report to {{reportingTo}}.' },
-      { h: 'Compensation', p: 'Your annual cost to company (CTC) will be {{ctc}}, paid monthly after applicable deductions.' },
-      { h: 'Probation', p: 'You will be on probation for {{probation}} months, after which your employment will be confirmed based on performance.' },
-      { h: 'Acceptance', p: 'Please sign and return a copy of this letter to confirm your acceptance.' }] },
+  { id: 'offer_letter', cat: 'hr', name: 'Offer Letter', desc: 'Job offer with role, joining date, salary structure (Annexure B) and terms (Annexure A).', signable: true, party: 'employee', partyLabel: 'Candidate',
+    fields: [...empFields, { k: 'address', label: 'Residential address', wide: true }, { k: 'phone', label: 'Phone number' },
+      { k: 'joiningDate', label: 'Joining date', type: 'date' }, { k: 'location', label: 'Based at (work location)', def: 'Bengaluru' }, { k: 'reportingTo', label: 'Reporting to (manager)' },
+      { k: 'acceptBy', label: 'Accept the offer by', type: 'date' }, { k: 'probation', label: 'Probation (months)', type: 'number', def: '6' }, { k: 'notice', label: 'Notice period after confirmation (days)', type: 'number', def: '30' },
+      { k: 'hrName', label: 'HR name (signs the letter)' },
+      { k: 'sBasic', label: 'Basic (per month)', type: 'number' }, { k: 'sHra', label: 'HRA (per month)', type: 'number' }, { k: 'sSpecial', label: 'Special allowance (per month)', type: 'number' },
+      { k: 'sConv', label: 'Conveyance (per month)', type: 'number' }, { k: 'sMedical', label: 'Medical (per month)', type: 'number' }, { k: 'sLta', label: 'LTA (per month)', type: 'number' },
+      { k: 'sPf', label: 'PF employer contribution (per month)', type: 'number' }, { k: 'sBonus', label: 'Bonus (per year)', type: 'number' }],
+    intro: 'To,\n{{name}}\n{{address}}\nPhone: {{phone}}\n\nSub: Offer of Employment\n\nDear {{name}},\nCongratulations! We are pleased to confirm that you have been selected to work for {{agency}}. We are delighted to make you the following job offer.',
+    sections: [
+      { h: '', p: 'The position we are offering you is that of {{designation}} in the {{department}} team, based at {{location}}, with an annual cost to company (CTC) of {{ctc}}. This position reports to {{reportingTo}}. Your compensation structure is enclosed as Annexure B.' },
+      { h: '', p: 'We would like you to start work on {{joiningDate}}. Please report to {{reportingTo}} for documentation and orientation. If this date is not acceptable, please contact us immediately. On joining, you will be given access to AgencyOS, our HR system, where you may be required to upload your documents.' },
+      { h: '', p: 'You will be on probation for {{probation}} months. This offer is subject to background verification and medical fitness. Your employment will be subject to strict adherence to the policies and procedures of the Company and to the terms and conditions in Annexure A.' },
+      { h: '', p: 'After confirmation, you may end your employment with the Company by giving {{notice}} days notice, and the Company may do the same. You shall not be eligible to avail leave during the notice period.' },
+      { h: '', p: 'Please sign the enclosed copy of this letter and return it to us by {{acceptBy}} to indicate your acceptance of this offer. If you have any questions, please contact the undersigned.' },
+      { h: '', p: 'We are confident you will be able to make a significant contribution to the success of {{agency}} and look forward to working with you.' },
+      { h: '', p: 'Sincerely,\n{{hrName}}\nHuman Resources, {{agency}}' },
+    ],
+    annexA: [
+      { h: 'Posting and Transfer', p: 'Your services are liable to be transferred, at the sole discretion of Management, in such other capacity as the Company may determine, to any department / section, location, associate, sister concern or subsidiary, at any place in India or abroad, whether existing today or which may come up in future. In such a case, you will be governed by the terms and conditions of service applicable at the new placement location.' },
+      { h: 'Probation', p: 'You will be on probation for a period of {{probation}} months. The period of probation can be extended at the discretion of the Management and you will continue to be on probation till an order of confirmation has been issued in writing.' },
+      { h: 'Full time employment', p: 'Your position is a whole time employment with the Company and you shall devote yourself exclusively to the business and interests of the Company. You will not take up any other work for remuneration (part time or otherwise) or work in an advisory capacity, or be interested directly or indirectly (except as shareholder / debenture holder) in any other trade or business during your employment with the Company, without permission in writing of the Management. You will also not seek membership of any local or public bodies without first obtaining specific permission from the Management.' },
+      { h: 'Confidentiality', p: 'You will not, at any time, during the employment or after, without the consent of the Management, disclose or divulge or make public, except on legal obligations, any information regarding the Company\'s affairs, its clients or administration, whether the same is confided to you or becomes known to you in the course of your service or otherwise.' },
+      { h: 'Intellectual Property', p: 'If you conceive any new or advanced method of improving designs / processes / formulae / systems, campaigns or creative work in relation to the business / operations of the Company, such developments will be fully communicated to the Company and will be, and remain, the sole right / property of the Company.' },
+      { h: 'Responsibilities and Duties', p: 'Your work in the organization will be subject to the rules and regulations of the organization as laid down in relation to conduct, discipline and other matters. You will always be alive to the responsibilities and duties attached to your office and conduct yourself accordingly. You must effectively perform to ensure results.' },
+      { h: 'Past Records', p: 'This letter of offer is based on the information furnished in your application for employment and during the interviews you had with us. If any declaration given, or information furnished by you, to the Company proves to be false, or if you are found to have wilfully suppressed any material information, you will be liable to removal from services without any notice.' },
+      { h: 'Termination of employment', p: 'During the probationary period and any extension thereof, your services may be terminated without giving any notice or salary in lieu thereof. However, on confirmation the services can be terminated from either side by giving {{notice}} days notice or salary in lieu thereof.\nUpon resignation / termination of employment, you will immediately hand over to the Company all correspondence, specifications, documents, client data, market data, cost data, designs, files, login credentials or records belonging to the Company or relating to its business and shall not retain or make copies of these items. You will also return all company property which may be in your possession.\nNotwithstanding the above, the contract of service may also be terminated without payment of any compensation:\n- If you fail, refuse or neglect to carry out and perform the duties assigned to you by the Company, or for loss of confidence in you by the Company for any act committed by you.\n- If you are found to be guilty of fraud, insubordination or misconduct, whether in the course of performance of duties entrusted to you or otherwise.\n- If you are found unfit for being entrusted with responsible work commensurate with your position in consequence of any misconduct or moral turpitude, or if you commit any act prejudicial to the continuing good relationship between you and the Company.\n- If you commit breach of any of the terms of this letter.' },
+      { h: 'Authority', p: 'No authority is vested upon you to make any financial commitment and enter into agreements / contracts / understandings of any nature with any second party or third party without seeking the prior permission / approval of the Management. Any violation to exceed your specified authority will be seriously viewed and disciplinary / appropriate legal action will be taken.' },
+    ],
+    salary: true,
+    accept: 'I accept the aforesaid terms and conditions and this offer of employment. I shall keep the contents of this document confidential.\nI will join on {{joiningDate}}.' },
   { id: 'appointment_letter', cat: 'hr', name: 'Appointment Letter', desc: 'Formal appointment with terms of employment.', signable: true, party: 'employee', partyLabel: 'Employee',
     fields: [...empFields, { k: 'joiningDate', label: 'Joining date', type: 'date' }, { k: 'ctc', label: 'Annual CTC' }, { k: 'hours', label: 'Working hours', def: '9:30 AM - 6:30 PM, Monday to Saturday' }, { k: 'notice', label: 'Notice period (days)', type: 'number', def: '30' }],
     intro: 'Dear {{name}} ({{empId}}),\nWe are happy to appoint you as {{designation}}, {{department}}, with effect from {{joiningDate}}.',
