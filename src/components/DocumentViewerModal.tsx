@@ -1,6 +1,8 @@
+// AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
 import React, { useRef } from 'react';
 import { useApp } from '../context/AppContext';
+import { BrandDocViewer } from './BrandDocViewer';
 import { Printer, Download, X, CheckCircle, ShieldCheck, ArrowLeft } from 'lucide-react'; // AGENCYOS_V2_PART7
 
 export const DocumentViewerModal: React.FC = () => {
@@ -15,6 +17,7 @@ export const DocumentViewerModal: React.FC = () => {
   if (!docPreview.isOpen || !docPreview.data) return null;
 
   const { docType, data } = docPreview;
+  if (['quotation', 'invoice'].includes(docType as string)) return <BrandDocViewer />;
 
   const handlePrint = () => {
     // print only the document, on the official letterhead, in a clean A4 window

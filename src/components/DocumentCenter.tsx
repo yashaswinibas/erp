@@ -1,3 +1,4 @@
+// AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
 ﻿// Document Center: professional templates (client, HR, legal), live preview,
 // e-signatures, PDF export, attachments and document storage.
@@ -10,6 +11,8 @@ import { saveFile, openStoredFile } from '../lib/fileStore';
 import { StoredFile } from '../lib/hrTypes';
 import { fmtDate, localDate } from '../lib/dates';
 import { printHtml } from '../lib/print';
+import { letterPage, openBrandDoc } from '../lib/brandDocs';
+import { BrandFrame } from './BrandFrame';
 import { TEMPLATES, DocTemplate, DocCategory, CAT_LABEL } from '../lib/docTemplates';
 import { inputCls, Modal } from './ui2';
 
@@ -160,7 +163,7 @@ const Editor: React.FC<{ t: DocTemplate; doc?: SavedDoc }> = ({ t, doc }) => {
       <div className="xl:sticky xl:top-2 self-start">
         <div className="text-[11px] font-semibold tracking-wider uppercase text-slate-500 mb-2">Live preview</div>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-2 max-h-[70vh] overflow-y-auto">
-          <div className="lh-page"><div dangerouslySetInnerHTML={{ __html: docHtml(t, values, company, title, docDate, refOf(fake), {}) }} /></div>
+          <BrandFrame landscape={false} page={letterPage(docHtml(t, values, company, title, docDate, refOf(fake), {}), refOf(fake), docDate)} />
         </div>
       </div>
     </div>
@@ -261,7 +264,7 @@ export const DocumentCenter: React.FC = () => {
   const download = (d: SavedDoc) => {
     const t = tpl(d.templateId);
     if (t.id === 'upload') { if (d.files[0]) openStoredFile(d.files[0]); return; }
-    printHtml(d.title, company, docHtml(t, d.values, company, d.title, d.docDate, refOf(d), d));
+    void printHtml; openBrandDoc(d.title, letterPage(docHtml(t, d.values, company, d.title, d.docDate, refOf(d), d), refOf(d), d.docDate), false);
   };
   const remove = (d: SavedDoc) => { if (!confirm(`Delete "${d.title}"? This cannot be undone.`)) return; setDocs((p) => p.filter((x) => x.id !== d.id)); logAudit('DOCUMENT_DELETED', d.title, currentUser.name); };
   const attach = async (d: SavedDoc, files: FileList | null) => {
@@ -335,7 +338,7 @@ export const DocumentCenter: React.FC = () => {
         </div></div>}
       {viewing && <Modal title={viewing.title} onClose={() => setViewing(null)}>
         <div className="bg-white rounded-xl border border-slate-200 p-2">
-          <div className="lh-page"><div dangerouslySetInnerHTML={{ __html: docHtml(tpl(viewing.templateId), viewing.values, company, viewing.title, viewing.docDate, refOf(viewing), viewing) }} /></div>
+          <BrandFrame landscape={false} page={letterPage(docHtml(tpl(viewing.templateId), viewing.values, company, viewing.title, viewing.docDate, refOf(viewing), viewing), refOf(viewing), viewing.docDate)} />
         </div>
         <div className="flex justify-end gap-2 mt-4"><button onClick={() => download(viewing)} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold cursor-pointer"><Download className="w-4 h-4" />Download PDF</button></div>
       </Modal>}

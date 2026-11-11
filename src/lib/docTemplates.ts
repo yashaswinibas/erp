@@ -1,4 +1,5 @@
-﻿// Document Center templates. Body text uses {{field}} placeholders.
+// AGENCYOS_BRAND_DOCS
+// Document Center templates. Body text uses {{field}} placeholders.
 export type DocCategory = 'client' | 'hr' | 'legal' | 'other';
 export type FieldType = 'text' | 'textarea' | 'date' | 'number' | 'select';
 export interface TField { k: string; label: string; type?: FieldType; ph?: string; wide?: boolean; options?: string[]; def?: string }
@@ -116,6 +117,84 @@ export const TEMPLATES: DocTemplate[] = [
     intro: 'Dear {{name}} ({{empId}}),',
     sections: [{ h: 'Subject: Warning', p: 'This letter is a formal warning regarding the following issue noted on {{incidentDate}}: {{issue}}' },
       { h: 'Expected improvement', p: '{{expectation}}' }, { h: '', p: 'Repeat of such behaviour may lead to further disciplinary action. Please sign to acknowledge receipt.' }] },
+
+
+  // ---------------- FREELANCE / CONTRACT OFFERS (AGENCYOS_BRAND_DOCS) ----------------
+  { id: 'freelancer_offer', cat: 'hr', name: 'Freelancer Offer Letter', desc: 'Offer a freelance (independent contractor) role with fee, payment cycle and work terms.', signable: true, party: 'other', partyLabel: 'Freelancer',
+    fields: [{ k: 'partyName', label: 'Freelancer name' }, { k: 'partyAddress', label: 'Address', wide: true }, { k: 'partyEmail', label: 'Email' }, { k: 'partyPhone', label: 'Phone' },
+      { k: 'role', label: 'Freelance role', ph: 'Freelance Video Editor' }, { k: 'startDate', label: 'Start date', type: 'date' },
+      { k: 'engagement', label: 'Engagement type', type: 'select', options: ['Per project', 'Monthly retainer', 'Per deliverable', 'Hourly'], def: 'Per project' },
+      { k: 'fee', label: 'Fee', ph: 'Rs. 25,000 per month / Rs. 1,500 per video' }, { k: 'paymentCycle', label: 'Payment cycle', def: 'Within 7 days of approved invoice' },
+      { k: 'scope', label: 'Scope of work', type: 'textarea', wide: true, ph: 'Edit 12 reels per month, 2 revisions per reel, deliver in 48 hours' },
+      { k: 'reportingTo', label: 'Point of contact' }, { k: 'noticeDays', label: 'Notice period (days)', type: 'number', def: '15' }],
+    intro: 'Dear {{partyName}},\nWe are pleased to offer you a freelance engagement as {{role}} with {{agency}}. This is an independent contractor engagement and not an offer of employment.',
+    sections: [
+      { h: 'Engagement', p: 'Your engagement starts on {{startDate}} on a {{engagement}} basis. Your point of contact will be {{reportingTo}}.' },
+      { h: 'Scope of work', p: '{{scope}}' },
+      { h: 'Fees and payment', p: 'You will be paid {{fee}}. Payment cycle: {{paymentCycle}}. Please raise an invoice for each payment. TDS will be deducted where applicable.' },
+      { h: 'Working terms', p: 'You may work from your own location using your own equipment and software. You will meet the agreed deadlines, join review calls when needed and follow the brand guidelines shared by the agency.' },
+      { h: 'Confidentiality and non-solicitation', p: 'You will keep all agency and client information confidential and will not contact or work directly with agency clients during the engagement and for 12 months after it ends.' },
+      { h: 'Ownership of work', p: 'All work created for the agency and its clients belongs to {{agency}} after payment. You may show it in your portfolio only with written permission.' },
+      { h: 'Ending the engagement', p: 'Either side may end this engagement with {{noticeDays}} days written notice. Approved work done till the end date will be paid.' },
+      { h: 'Acceptance', p: 'Please sign and return a copy of this letter to accept this offer.' },
+    ] },
+  { id: 'freelance_assignment', cat: 'hr', name: 'Freelance Project Assignment', desc: 'Work order for one project given to a freelancer: deliverables, deadline, revisions and fee.', signable: true, party: 'other', partyLabel: 'Freelancer',
+    fields: [{ k: 'partyName', label: 'Freelancer name' }, { k: 'partyAddress', label: 'Address', wide: true }, { k: 'projectName', label: 'Project name' },
+      { k: 'deliverables', label: 'Deliverables (one per line)', type: 'textarea', wide: true }, { k: 'startDate', label: 'Start date', type: 'date' }, { k: 'deadline', label: 'Deadline', type: 'date' },
+      { k: 'revisions', label: 'Revisions included', type: 'number', def: '2' }, { k: 'fee', label: 'Project fee', ph: 'Rs. 15,000' }, { k: 'paymentTerms', label: 'Payment terms', def: '100% within 7 days of final approval' }],
+    intro: 'Dear {{partyName}},\nThis letter assigns you the following freelance project from {{agency}}.',
+    sections: [
+      { h: 'Project', p: '{{projectName}}' }, { h: 'Deliverables', p: '{{deliverables}}' },
+      { h: 'Timeline', p: 'Start: {{startDate}}. Final delivery by: {{deadline}}.' },
+      { h: 'Revisions', p: '{{revisions}} rounds of revisions are included. Extra changes will be agreed separately.' },
+      { h: 'Fee and payment', p: '{{fee}}. {{paymentTerms}}.' },
+      { h: 'Terms', p: 'All files, source files and rights pass to {{agency}} after payment. Client details stay confidential. Delays must be informed in advance.' },
+    ] },
+  { id: 'contract_offer', cat: 'hr', name: 'Contract / Consultant Offer Letter', desc: 'Fixed-term contract or consultant role with monthly fee and contract period.', signable: true, party: 'other', partyLabel: 'Consultant',
+    fields: [{ k: 'partyName', label: 'Consultant name' }, { k: 'partyAddress', label: 'Address', wide: true }, { k: 'role', label: 'Role', ph: 'Performance Marketing Consultant' },
+      { k: 'startDate', label: 'Contract start', type: 'date' }, { k: 'endDate', label: 'Contract end', type: 'date' }, { k: 'fee', label: 'Monthly fee', ph: 'Rs. 40,000 per month' },
+      { k: 'hours', label: 'Working days / hours', def: 'Monday to Saturday, 10:00 AM - 6:00 PM' }, { k: 'location', label: 'Work location', def: 'Bengaluru / Remote' }, { k: 'reportingTo', label: 'Reporting to' },
+      { k: 'duties', label: 'Key responsibilities', type: 'textarea', wide: true }, { k: 'noticeDays', label: 'Notice period (days)', type: 'number', def: '15' }],
+    intro: 'Dear {{partyName}},\nWe are pleased to offer you a contract position as {{role}} with {{agency}}.',
+    sections: [
+      { h: 'Contract period', p: 'From {{startDate}} to {{endDate}}. The contract may be extended by mutual written agreement.' },
+      { h: 'Responsibilities', p: '{{duties}}' },
+      { h: 'Fee', p: '{{fee}}, paid monthly against your invoice. TDS will be deducted as applicable. As a contractor you are not eligible for PF, ESI or other employee benefits.' },
+      { h: 'Work schedule', p: '{{hours}}. Location: {{location}}. You will report to {{reportingTo}}.' },
+      { h: 'Confidentiality', p: 'All agency and client information must be kept confidential during and after the contract.' },
+      { h: 'Termination', p: 'Either side may end the contract with {{noticeDays}} days written notice.' },
+      { h: 'Acceptance', p: 'Please sign and return a copy of this letter to accept this offer.' },
+    ] },
+  { id: 'parttime_offer', cat: 'hr', name: 'Part-time Offer Letter', desc: 'Offer for a part-time role with hours per week and pay.', signable: true, party: 'employee', partyLabel: 'Candidate',
+    fields: [{ k: 'name', label: 'Candidate name' }, { k: 'designation', label: 'Role' }, { k: 'department', label: 'Department' }, { k: 'joiningDate', label: 'Start date', type: 'date' },
+      { k: 'hours', label: 'Working hours', def: '4 hours a day, Monday to Friday' }, { k: 'pay', label: 'Pay', ph: 'Rs. 12,000 per month' }, { k: 'location', label: 'Work location', def: 'Bengaluru' },
+      { k: 'reportingTo', label: 'Reporting to' }, { k: 'noticeDays', label: 'Notice period (days)', type: 'number', def: '15' }],
+    intro: 'Dear {{name}},\nWe are pleased to offer you the part-time position of {{designation}} in the {{department}} team at {{agency}}.',
+    sections: [
+      { h: 'Start date and hours', p: 'You will start on {{joiningDate}}. Working hours: {{hours}} at {{location}}. You will report to {{reportingTo}}.' },
+      { h: 'Pay', p: '{{pay}}, paid monthly based on attendance.' },
+      { h: 'Policies', p: 'Attendance, leave and conduct follow company policy. Company and client information must be kept confidential.' },
+      { h: 'Notice period', p: '{{noticeDays}} days from either side.' },
+      { h: 'Acceptance', p: 'Please sign and return a copy of this letter to accept this offer.' },
+    ] },
+  { id: 'sales_partner', cat: 'legal', name: 'Sales / Referral Partner Agreement', desc: 'Commission-based partner who brings clients to the agency.', signable: true, party: 'other', partyLabel: 'Partner',
+    fields: [{ k: 'partyName', label: 'Partner name' }, { k: 'partyAddress', label: 'Address', wide: true }, { k: 'effectiveDate', label: 'Effective date', type: 'date' },
+      { k: 'commission', label: 'Commission', ph: '10% of the first 3 months billing' }, { k: 'payout', label: 'Payout timing', def: 'Within 15 days after the client pays the agency' },
+      { k: 'territory', label: 'Area / segment', def: 'Bengaluru' }, { k: 'term', label: 'Term', def: '12 months' }],
+    intro: 'This agreement is made on {{effectiveDate}} between {{agency}} and {{partyName}}, {{partyAddress}} ("Partner").',
+    sections: [
+      { h: 'Role', p: 'The Partner will introduce new clients to the agency in {{territory}}. The agency decides pricing and accepts clients at its discretion.' },
+      { h: 'Commission', p: '{{commission}}, only on amounts actually received by the agency from clients introduced by the Partner.' },
+      { h: 'Payout', p: '{{payout}}. TDS will be deducted as applicable.' },
+      { h: 'Conduct', p: 'The Partner will not make promises on behalf of the agency, will not collect money from clients, and will keep all information confidential.' },
+      { h: 'Term and termination', p: '{{term}} from the effective date. Either side may end it with 15 days written notice. Commission already earned remains payable.' },
+    ] },
+  { id: 'freelance_completion', cat: 'hr', name: 'Freelance Work Completion Letter', desc: 'Confirms the work a freelancer completed for the agency.', signable: false, party: 'other', partyLabel: 'Freelancer',
+    fields: [{ k: 'partyName', label: 'Freelancer name' }, { k: 'role', label: 'Freelance role' }, { k: 'fromDate', label: 'From', type: 'date' }, { k: 'toDate', label: 'To', type: 'date' },
+      { k: 'work', label: 'Work done', type: 'textarea', wide: true }],
+    intro: 'TO WHOM IT MAY CONCERN',
+    sections: [{ h: '', p: 'This is to confirm that {{partyName}} worked with {{agency}} as a freelance {{role}} from {{fromDate}} to {{toDate}}.' },
+      { h: '', p: 'Work done: {{work}}' }, { h: '', p: 'We appreciate the quality of work delivered and wish them continued success.' }] },
 
   // ---------------- BUSINESS / LEGAL ----------------
   { id: 'vendor_agreement', cat: 'legal', name: 'Vendor Agreement', desc: 'Agreement with a vendor or supplier (printing, media, production).', signable: true, party: 'other', partyLabel: 'Vendor',

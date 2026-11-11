@@ -1,4 +1,5 @@
-﻿// AgencyOS v2 Part 3: Quotation desk (addresses, files, revisions, approval, convert),
+// AGENCYOS_BRAND_DOCS
+// AgencyOS v2 Part 3: Quotation desk (addresses, files, revisions, approval, convert),
 // Agreements (clauses, versions, signed copy, renewals), Instalments (schedule, invoice,
 // payments, receipts, client-wise history), Scope of Work (versions, milestones,
 // approval), Project templates and project change history.
@@ -156,6 +157,7 @@ function useDealsState(initialTab: DealsTab) {
 
 const QuotationsTab = () => {
   const { quotations, currentUser, updateQuotation, logAudit, isFinance, setModal, cname, getQx, saveQx, convertQuotation } = useD();
+  const { openDocument } = useApp();
   return (
   <div className={card}>
     {quotations.length === 0 ? <Empty text="No quotations yet. Create one from Invoices & Collections." /> : (
@@ -173,6 +175,7 @@ const QuotationsTab = () => {
               <td className={td}>{x.revisions.length}</td>
               <td className={td}><div className="flex flex-wrap gap-1">
                 <button className={btnGhost} onClick={() => setModal({ kind: 'q_edit', id: q.id })} disabled={q.status === 'converted'}>Edit</button>
+                <button className={btnGhost} onClick={() => openDocument('quotation' as any, `Quotation - ${q.quotationNumber}`, { ...q, terms: x.paymentTerms || q.terms, clientName: cname(q.clientId) })}>Print / PDF</button>
                 <button className={btnGhost} onClick={() => setModal({ kind: 'q_details', id: q.id })}>Details & files</button>
                 {x.revisions.length > 0 && <button className={btnGhost} onClick={() => setModal({ kind: 'q_revs', id: q.id })}>History</button>}
                 {isFinance && x.approval === 'pending' && <>
