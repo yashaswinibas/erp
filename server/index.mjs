@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import fs from 'fs';
 
-const D = JSON.parse(fs.readFileSync(new URL('./defaults.json', import.meta.url), 'utf8'));
+import D from './defaults.json' with { type: 'json' }; // AGENCYOS_VERCEL
 const M = D.M;
 const PORT = Number(process.env.PORT || 4000);
 const SECRET = process.env.JWT_SECRET || '';
@@ -22,7 +22,7 @@ if (SECRET.length < 16) { console.error('JWT_SECRET in .env must be at least 16 
 // AGENCYOS_SUPABASE: SSL for cloud databases (DB_SSL=true, or automatic for supabase.com)
 const USE_SSL = /^(1|true|yes|require)$/i.test(E.DB_SSL || '') || /supabase/i.test((E.DATABASE_URL || '') + (E.DB_HOST || ''));
 const SSL = USE_SSL ? { rejectUnauthorized: false } : undefined;
-const pool = new pg.Pool(E.DATABASE_URL && !E.DB_PASSWORD ? { connectionString: E.DATABASE_URL.replace(/[?&]sslmode=[^&]*/, ''), ssl: SSL } : { ...DB, ssl: SSL });
+const pool = new pg.Pool(E.DATABASE_URL && !E.DB_PASSWORD ? { connectionString: E.DATABASE_URL.replace(/[?&]sslmode=[^&]*/, ''), ssl: SSL, max: E.VERCEL ? 3 : 10 } : { ...DB, ssl: SSL, max: E.VERCEL ? 3 : 10 });
 const dbInfo = () => { if (E.DATABASE_URL && !E.DB_PASSWORD) { try { const u = new URL(E.DATABASE_URL); return { host: u.hostname, port: u.port || '5432', user: decodeURIComponent(u.username), database: u.pathname.slice(1) }; } catch { return {}; } } return { host: DB.host, port: DB.port, user: DB.user, database: DB.database }; };
 const DEFAULT_PASSWORD = 'Welcome@123';
 const clientHash = (pw) => crypto.createHash('sha256').update('paa-salt:' + pw).digest('hex'); // same as the browser
@@ -160,6 +160,8 @@ async function auth(req, res, next) {
 const app = express();
 app.use(express.json({ limit: '25mb' }));
 app.set('trust proxy', true);
+const OPEN = ['/', '/api/server', '/api/status', '/api/health'];
+app.use(async (req, res, next) => { if (OPEN.includes(req.path)) return next(); try { await READY; next(); } catch (e) { res.status(503).json({ error: 'Database not reachable: ' + e.message }); } });
 const ip = (req) => (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').toString().split(',')[0].trim();
 
 const esc = (x) => String(x ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -179,7 +181,7 @@ async function status() {
   return out;
 }
 app.get('/api/status', async (_q, res) => res.json(await status()));
-app.get('/', async (_q, res) => {
+app.get(['/', '/api/server'], async (_q, res) => {
   const s = await status(); const ok = s.db.connected;
   const row = (k, v) => '<tr><td>' + esc(k) + '</td><td><b>' + esc(v) + '</b></td></tr>';
   res.send('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="10"><title>AgencyOS Server</title><style>body{margin:0;background:#F8F9FB;font:14px Inter,Segoe UI,Arial;color:#111827}main{max-width:900px;margin:32px auto;padding:0 16px}.card{background:#fff;border:1px solid #E5E7EB;border-radius:13px;padding:20px;margin-bottom:16px}h1{color:#0B1738;margin:0 0 4px;font-size:22px}.mark{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#0B1738;color:#fff;font-weight:800;margin-right:10px;vertical-align:middle}.pill{display:inline-block;padding:5px 11px;border-radius:999px;font-weight:700;font-size:12px}.g{background:#E6F6EF;color:#087F59}.r{background:#FEEDEC;color:#B42318}table{width:100%;border-collapse:collapse}td,th{padding:8px 10px;border-bottom:1px solid #F1F2F5;text-align:left;font-size:13px}th{background:#FAFBFC;color:#667085;font-size:11px;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:700px){.grid{grid-template-columns:1fr}}small{color:#667085}</style></head><body><main>'
@@ -351,7 +353,9 @@ app.get('/api/changes', auth, async (req, res) => {
   res.json({ stores: r.rows.map((x) => x.store), cursor: String(last) });
 });
 
-migrate().then(() => app.listen(PORT, async () => { const s = await status(); console.log('\n  ================ AgencyOS Server ================');
+const READY = migrate();
+READY.catch(() => undefined);
+if (!E.VERCEL) READY.then(() => app.listen(PORT, async () => { const s = await status(); console.log('\n  ================ AgencyOS Server ================');
   console.log('  Server     : RUNNING on http://localhost:' + PORT);
   console.log('  PostgreSQL : ' + (s.db.connected ? 'CONNECTED' : 'NOT CONNECTED') + ' (' + s.db.user + '@' + s.db.host + ':' + s.db.port + '/' + s.db.database + ', version ' + (s.db.version || '?') + ')');
   console.log('  Tables     : ' + (s.tables || []).length + '   Rows: ' + (s.tables || []).reduce((a, t) => a + t.rows, 0));
@@ -359,3 +363,5 @@ migrate().then(() => app.listen(PORT, async () => { const s = await status(); co
   console.log('  Website    : http://localhost:3000');
   console.log('  =================================================\n  Keep this window open. Press Ctrl+C to stop the server.\n'); }))
   .catch((e) => { console.error('\n  PostgreSQL NOT CONNECTED: ' + e.message + '\n  Check DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME in .env and that PostgreSQL is running.\n  Status page still available at http://localhost:' + PORT + '\n'); app.listen(PORT); });
+
+export default app;
