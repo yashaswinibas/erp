@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
@@ -97,11 +98,11 @@ export const AnalyticsView: React.FC = () => {
       {/* View Header with Filters and Export */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Productivity & Business Intelligence Analytics</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="legacy-title text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Real-time cross-module insights: Attendance · Field Force · Sales Funnel · Billables · Velocity
           </p>
         </div>

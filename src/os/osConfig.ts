@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_V5_P26_DONE
 // AGENCYOS_V3_OS: pages, roles and access rules of the Priority Ads Agency OS.
 // Layout and defaults follow AgencyOS_UI_Prototype.html + AgencyOS_Easy_Approval_Template.xlsx.
@@ -186,6 +187,8 @@ export const DEFAULT_MATRIX: Record<string, number[]> = {
 
 export const EVERYONE = ['my-dashboard', 'alerts', 'calendar', 'my_tasks', 'task-review', 'attendance', 'leave', 'my-payslips', 'reimbursements', 'access_admin', 'hierarchy', 'weekly-reports'];
 const FIELD = ['field_force_desk', 'field_force', 'field_gps'];
+export const FIELD_MODULE_KEY = 'paa_x_os_modules';
+export const fieldModuleOn = () => { try { return (JSON.parse(localStorage.getItem(FIELD_MODULE_KEY) || '{}') || {}).field !== false; } catch { return true; } };
 /** Default screens per role (prototype "allowed" lists). Founder / Owner see everything. */
 export const ROLE_PAGES: Record<string, string[]> = {
   manager: ['ops-dashboard', 'approvals', 'sales-overview', 'leads', 'pipeline', 'lead-profile', 'followups', 'inbox', 'proposals', 'deals_quotations', 'lost', 'clients', 'client-profile', 'onboarding', 'services', 'deals_agreements', 'projects', 'project-profile', 'task_operations', 'creative', 'content-calendar', 'campaigns', 'deliverables', 'capacity', 'deals_sow', 'deals_templates', 'employees', 'sales-report', 'team-report', ...FIELD],
@@ -238,6 +241,7 @@ export const setOsFieldAccess = (ok: boolean) => { FIELD_OK = ok; };
 /** Can this role open this screen? */
 export function osCanAccess(role: string, tabIn: string): boolean {
   if (role === 'super_admin') return true;
+  if (FIELD.includes(ALIASES[tabIn] || tabIn) && !fieldModuleOn()) return false;
   if (tabIn === 'approve_claims') return readMatrix()[role]?.[M.CLAIM_APPROVE] === 1;
   if (tabIn === 'view_all_claims') return readMatrix()[role]?.[M.CLAIM_ALL] === 1;
   const tab = ALIASES[tabIn] || tabIn;

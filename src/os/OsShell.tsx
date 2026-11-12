@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_LOGO
 // AGENCYOS_V3_OS: sidebar, top bar and page header (AgencyOS prototype layout)
 import React, { useMemo, useState } from 'react';
@@ -6,6 +7,7 @@ import { Icon } from './icons';
 import { NAV_GROUPS, PAGES, pageById, ALIASES, roleLabel, osCanAccess } from './osConfig';
 import { initials } from './OsUi';
 import { useAlerts, useApprovalQueue } from './osData';
+import { buildNav, hubOf } from './osHubs';
 
 export const OsSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
   const { activeTab, setActiveTab, currentRole, currentUser, logout } = useApp();
@@ -13,9 +15,7 @@ export const OsSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ op
   const current = ALIASES[activeTab] || activeTab;
   const approvals = useApprovalQueue().filter((a) => a.canAct).length;
   const alerts = useAlerts().filter((a) => a.severity === 'Critical' || a.severity === 'High').length;
-  const groups = useMemo(() => NAV_GROUPS.map((g) => ({ ...g, pages: PAGES.filter((p) => p.group === g.key && !p.hidden && osCanAccess(currentRole, p.id) && p.name.toLowerCase().includes(q.toLowerCase().trim())) })).filter((g) => g.pages.length),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentRole, q, currentUser.workMode]);
+  const groups = buildNav(currentRole, q);
   return (
     <>
       <div className={`backdrop ${open ? 'show' : ''}`} onClick={onClose} />
@@ -28,9 +28,9 @@ export const OsSidebar: React.FC<{ open: boolean; onClose: () => void }> = ({ op
             <React.Fragment key={g.key}>
               <div className="nav-heading">{g.key}</div>
               {g.pages.map((p) => (
-                <button key={p.id} className={`nav-item ${current === p.id ? 'active' : ''}`} onClick={() => { setActiveTab(p.id); onClose(); window.scrollTo({ top: 0 }); }}>
+                <button key={p.id} className={`nav-item ${(p.members ? p.members.includes(current) : current === p.id) ? 'active' : ''}`} onClick={() => { setActiveTab(p.go); onClose(); window.scrollTo({ top: 0 }); }}>
                   <Icon name={g.icon} size={16} /><span>{p.name}</span>
-                  {p.id === 'approvals' && approvals > 0 && <span className="count">{approvals}</span>}
+                  {(p.id === 'approvals' || p.id === 'hub-approvals') && approvals > 0 && <span className="count">{approvals}</span>}
                   {p.id === 'alerts' && alerts > 0 && <span className="count red">{alerts}</span>}
                 </button>
               ))}
@@ -56,7 +56,7 @@ export const OsTopbar: React.FC<{ onMenu: () => void }> = ({ onMenu }) => {
     <header className="topbar">
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
         <button className="top-icon mobile-toggle" aria-label="Open menu" onClick={onMenu}><Icon name="menu" size={19} /></button>
-        <div className="breadcrumb">{p ? <>{p.group} &nbsp;/&nbsp; <b>{p.name}</b></> : <b>{activeTab.replace(/_/g, ' ')}</b>}</div>
+        <div className="breadcrumb">{p ? <>{p.group} &nbsp;/&nbsp; {hubOf(p.id) && hubOf(p.id)!.name !== p.name ? <>{hubOf(p.id)!.name} &nbsp;/&nbsp; </> : null}<b>{p.name}</b></> : <b>{activeTab.replace(/_/g, ' ')}</b>}</div>
       </div>
       <div className="top-actions">
         <span className="demo-tag hide-mobile">{roleLabel(currentRole).toUpperCase()}</span>
@@ -72,7 +72,7 @@ export const OsHeader: React.FC<{ actions?: React.ReactNode }> = ({ actions }) =
   const p = pageById(ALIASES[activeTab] || activeTab);
   if (!p) return null;
   return (
-    <div className="titlebar"><div><div className="eyebrow">PRIORITY ADS AGENCY / {p.group.toUpperCase()}</div><h1 className="h1">{p.name}</h1><p className="subline">{p.subtitle}</p></div>
+    <div className="titlebar"><div><div className="eyebrow">PRIORITY ADS AGENCY / {p.group.toUpperCase()}</div><h1 className="h1">{hubOf(p.id)?.name || p.name}</h1><p className="subline">{p.subtitle}</p></div>
       {actions && <div className="actions">{actions}</div>}</div>
   );
 };

@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_SALARY_LINK: payslips show in Finance Overview as soon as they are generated
 // Separate Finance dashboard: revenue, collections, pending collections, expenses,
 // salary expenditure, net operating margin, pending payments, monthly summary.
@@ -84,7 +85,7 @@ export const FinanceDashboard: React.FC<{ onOpen?: (tab: string) => void }> = ({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div><h2 className="text-lg font-bold text-slate-900 dark:text-white">Finance Dashboard</h2><p className="text-xs text-slate-500">Revenue, collections, expenses, payroll and payments.</p></div>
+        <div><h2 className="legacy-title text-lg font-bold text-slate-900 dark:text-white">Finance Dashboard</h2><p className="legacy-title text-xs text-slate-500">Revenue, collections, expenses, payroll and payments.</p></div>
         <div className="flex flex-wrap gap-2">
           <select className={inputCls} style={{ width: 100 }} value={year} onChange={(e) => setYear(Number(e.target.value))}>{[0, 1, 2, 3].map((k) => <option key={k} value={now.getFullYear() - k}>{now.getFullYear() - k}</option>)}</select>
           <select className={inputCls} style={{ width: 150 }} value={month} onChange={(e) => setMonth(Number(e.target.value))}><option value={0}>Whole year</option>{MONTH_NAMES.map((n, i) => <option key={n} value={i + 1}>{n}</option>)}</select>

@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
@@ -87,11 +88,11 @@ export const FieldForceModule: React.FC<FieldForceProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <MapPin className="w-5 h-5 text-amber-500" />
             <span>Field Force & Client Meeting Management</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="legacy-title text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Real-time client site visits · Attendance mode linkage · Direct travel & food reimbursement generation
           </p>
         </div>
@@ -151,7 +152,7 @@ export const FieldForceModule: React.FC<FieldForceProps> = ({
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-10 overflow-y-auto bg-black/60 backdrop-blur-xs">
           <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Conclude Field Visit & Record Outcomes (Prompt #25 & #27)
+              Conclude Field Visit & Record Outcomes
             </h3>
             <p className="text-xs text-slate-500">
               Please enter the discussion summary, agreed next steps, and follow-up schedule.

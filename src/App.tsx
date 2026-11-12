@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_DB_DONE
 // AGENCYOS_V5_P26_DONE
 // AGENCYOS_V4_P25_DONE
@@ -8,6 +9,7 @@ import { OsLogin } from './os/OsLogin';
 import { OsSidebar, OsTopbar, OsHeader } from './os/OsShell';
 import { ToastHost } from './os/OsUi';
 import { renderOsPage } from './os/OsRouter';
+import { HubTabs } from './os/osHubs';
 import { AccessAdmin, ForcePasswordChange } from './components/AccessAdmin';
 import { FinanceDashboard } from './components/FinanceDashboard';
 import { DocumentCenter } from './components/DocumentCenter'; // AGENCYOS_V2_PART13
@@ -421,6 +423,7 @@ function MainApp() {
         <OsTopbar onMenu={() => setSidebarOpen(true)} />
         <main className="page">
           <OsHeader />
+          <HubTabs />
           {!allowed && <div className="notice"><b>This screen is not available for your role.</b>&nbsp;Ask the Founder to switch it ON in the Permission Matrix.</div>}
         <div className="os-embed">
           {allowed && renderOsPage(activeTab, openAddModal)}

@@ -1,4 +1,5 @@
-﻿/* AgencyOS design (from AgencyOS_UI_Prototype.html) - AGENCYOS_V3_OS */
+/* AGENCYOS_HUBS_DONE */
+/* AgencyOS design (from AgencyOS_UI_Prototype.html) - AGENCYOS_V3_OS */
 
 :root{--bg:#F8F9FB;--panel:#fff;--navy:#0B1738;--deep:#07122F;--gold:#F5B82E;--gold-dark:#D99B1F;--ink:#111827;--muted:#667085;--line:#E5E7EB;--line2:#F0F1F4;--green:#087F59;--red:#B42318;--orange:#B45F06;--blue:#2458A6;--radius:13px;--shadow:0 2px 9px rgba(11,23,56,.035);--sidebar:268px}
 
@@ -354,3 +355,10 @@ p{line-height:1.55}
 .panel{padding:16px}
 .columns{gap:14px;margin-bottom:14px}
 @media(max-width:830px){.page{padding:14px 12px}.nav-item{min-height:44px}}
+
+.hub-tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:-6px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.hub-tab{border:1px solid var(--line);background:var(--panel);color:#475467;border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:650;cursor:pointer}
+.hub-tab:hover{background:#F7F8FB}
+.hub-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.hub-switch{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:650;color:var(--navy);cursor:pointer}
+.os-embed .legacy-title{display:none!important}

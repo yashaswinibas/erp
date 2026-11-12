@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { localDate } from '../lib/dates'; // AGENCYOS_V2_UI
@@ -140,11 +141,11 @@ export const LeaveManagementModule: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <CalendarDays className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Leave Management & Time-Off Balance</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="legacy-title text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Annual entitlements, half-day leaves, medical approvals & emergency contact audit
           </p>
         </div>

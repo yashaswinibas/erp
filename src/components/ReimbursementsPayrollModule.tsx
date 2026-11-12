@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import { FinanceLinkBar } from './FinanceLinkBar'; // AGENCYOS_V2_PART16
 import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import { canAccess } from '../lib/rbac';
@@ -134,7 +135,7 @@ export const ReimbursementsPayrollModule: React.FC<{
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
               <Receipt className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span>Reimbursements & Corporate Expense Management</span>
             </h2>

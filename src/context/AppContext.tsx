@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_FRESH_START
 // AGENCYOS_V4_P25_DONE
 import { homeTab } from '../lib/rbac'; // AGENCYOS_V2_PART4
@@ -991,7 +992,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     addAuditLog('LEAD_STATUS_UPDATE', leadId, `Status updated to ${status}`);
   };
 
-  // Convert Lead to Client (Prompt #20)
+  // Convert Lead to Client
   const convertLeadToClient = (leadId: string) => {
     const targetLead = leads.find(l => l.id === leadId);
     if (!targetLead) return;
@@ -1342,7 +1343,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     addAuditLog('DESIGNATION_CREATED', newDesig.title, `Designation created: ${newDesig.title}`);
   };
 
-  // Generate Payslip for an employee (Prompt #35 & #36)
+  // Generate Payslip for an employee
   const generatePayslipForEmployee = (employeeId: string, payPeriod: string) => {
     const emp = employees.find(e => e.id === employeeId);
     if (!emp) return;

@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
 import React, { useRef } from 'react';
@@ -381,7 +382,7 @@ export const DocumentViewerModal: React.FC = () => {
                     With reference to your interview and discussions with our leadership panel, we are pleased to offer you the position of <strong className="text-slate-900">{doc.designation || 'Software Engineer'}</strong> at <strong>Priority Ads Agency</strong>.
                   </p>
                   <p>
-                    Your gross annual remuneration will be <strong className="text-slate-900 font-mono">₹{((doc.salary?.netSalary || 60000) * 12).toLocaleString()} per annum</strong>, inclusive of all statutory components and performance incentives.
+                    Your gross annual remuneration will be <strong className="text-slate-900 font-mono">₹{((doc.salary?.netSalary || 0) * 12).toLocaleString()} per annum</strong>, inclusive of all statutory components and performance incentives.
                   </p>
                   <p>
                     Your expected joining date is <strong className="text-slate-900">{doc.joiningDate || 'Immediate'}</strong> at our Bangalore Headquarters. Please sign and return a duplicate copy of this letter as acceptance of this offer.
@@ -487,7 +488,7 @@ export const DocumentViewerModal: React.FC = () => {
             />
           </div>
 
-          {/* Official Letterhead Header (Strictly preserving Prompt #1, #36, #61) */}
+          {/* Official Letterhead Header */}
           <div className="relative z-10">
             <div className="flex items-start justify-between gap-4 pb-4">
               <div className="hidden">

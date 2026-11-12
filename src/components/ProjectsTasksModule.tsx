@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import { scopeForStaff } from '../lib/scope'; // AGENCYOS_V2_PART19
 import { isStaffRole } from '../os/osConfig'; // AGENCYOS_V3_OS
 import React, { useState, useEffect } from 'react';
@@ -101,7 +102,7 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             {activeTab === 'my_tasks' && <ListTodo className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
             {activeTab === 'task_operations' && <CheckSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
             {activeTab === 'projects' && <Briefcase className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
@@ -111,7 +112,7 @@ export const ProjectsTasksModule: React.FC<ProjectsTasksProps> = ({
               {activeTab === 'projects' && 'Projects Matrix & Deliverable Tracking'}
             </span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="legacy-title text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             {activeTab === 'my_tasks' && 'Your assigned deliverables, active work timer & daily activity logging'}
             {activeTab === 'task_operations' && 'Live agency deliverable workflow: To Do → In Progress → QA → Done'}
             {activeTab === 'projects' && 'High-level project budgets, client ownership & deliverable health'}

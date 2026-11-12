@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_HR_OFFER
 // AgencyOS v2: Employee onboarding, documents, contracts, salary structure,
 // bank details, monthly attendance finalisation, payroll and payslips.
@@ -343,8 +344,8 @@ export const HrPayrollModule: React.FC<{ initialTab?: Tab }> = ({ initialTab = '
   return (
     <div className="space-y-5">
       <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">HR, Onboarding & Payroll</h2>
-        <p className="text-xs text-slate-500">Onboarding checklist, documents, contracts, salary structure, attendance finalisation and monthly payroll.</p>
+        <h2 className="legacy-title text-xl font-bold text-slate-900 dark:text-white">HR, Onboarding & Payroll</h2>
+        <p className="legacy-title text-xs text-slate-500">Onboarding checklist, documents, contracts, salary structure, attendance finalisation and monthly payroll.</p>
         <div className="flex flex-wrap gap-1.5 mt-3">
           {tabs.map(([k, l]) => (
             <button key={k} onClick={() => setTab(k)} className={`${btn} ${tab === k ? 'bg-slate-900 text-white dark:bg-blue-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}`}>{l}</button>

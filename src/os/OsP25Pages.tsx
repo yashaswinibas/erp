@@ -1,4 +1,5 @@
-﻿// AGENCYOS_V4_P25: org structure, team leader desk, lead rules, task review, exits, action permissions
+// AGENCYOS_HUBS_DONE
+// AGENCYOS_V4_P25: org structure, team leader desk, lead rules, task review, exits, action permissions
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useShared, nowStamp } from '../lib/sharedStore';
@@ -208,7 +209,7 @@ export const LeadRulesPage: React.FC = () => {
         </div>
         {!canEdit && <p className="muted">Only the Founder / Owner or Sales Manager can change these rules.</p>}
         <div className="dept-line" style={{ borderBottom: '1px solid var(--line)', margin: '14px 0' }} />
-        <div className="form-group"><label>Test: which team gets this service?</label><input value={test} onChange={(e) => setTest(e.target.value)} /></div>
+        <div className="form-group"><label>Check: which team gets this service?</label><input value={test} onChange={(e) => setTest(e.target.value)} /></div>
         <p className="small" style={{ marginTop: 8 }}>{'\u2192'} <b>{tName(teamForService(test))}</b> {'\u00B7'} {(teamForService(test) ? members(teamForService(test)) : []).map((e) => e.name).join(', ') || 'no one placed yet'}</p>
       </Panel>
       <Panel title="Service-based assignment (round-robin inside the team)" right={<button className="outline-button os-mini" onClick={() => setActiveTab('hierarchy')}>Place people</button>}>

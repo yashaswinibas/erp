@@ -1,4 +1,5 @@
-﻿// Client Reimbursement Pool: money received from a client to spend on their behalf
+// AGENCYOS_HUBS_DONE
+// Client Reimbursement Pool: money received from a client to spend on their behalf
 // (ads budget, printing, travel...), what was spent, and the balance left per client.
 import { FinanceLinkBar } from './FinanceLinkBar'; // AGENCYOS_V2_PART16
 import React, { useMemo, useState } from 'react';
@@ -103,8 +104,8 @@ export const ClientReimbursementModule: React.FC = () => {
       <FinanceLinkBar kind="client" />
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Client Reimbursement</h2>
-          <p className="text-sm text-slate-500 mt-2">Track client reimbursement received, spent, and remaining</p>
+          <h2 className="legacy-title text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Client Reimbursement</h2>
+          <p className="legacy-title text-sm text-slate-500 mt-2">Track client reimbursement received, spent, and remaining</p>
         </div>
         <div className="flex gap-3">
           <button onClick={() => setModal('in')} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><ArrowDownLeft className="w-4 h-4" />Record Incoming</button>

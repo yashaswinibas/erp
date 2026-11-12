@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { X, CheckCircle, Shield, Plus, Trash2 } from 'lucide-react';
@@ -453,7 +454,7 @@ const FieldExpenseModal: React.FC<{ onClose: () => void; visitId?: string }> = (
             Linked Visit: {targetVisit?.companyName || 'Active Meeting'} ({targetVisit?.visitCode})
           </p>
           <p className="text-[11px] text-amber-800 dark:text-amber-300">
-            This expense automatically links to the visit history and submits an authorized reimbursement claim (Prompt #30).
+            This expense automatically links to the visit history and submits an authorized reimbursement claim.
           </p>
         </div>
 
@@ -539,7 +540,7 @@ const RegularizationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
   };
 
   return (
-    <ModalWrapper title="Submit Attendance Regularization Request (Prompt #14)" onClose={onClose}>
+    <ModalWrapper title="Submit Attendance Regularization Request" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <p className="text-slate-500">
           If you forgot to check in or out due to field duty or technical issues, request manager approval.
@@ -600,7 +601,7 @@ const RegularizationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
 const ReimbursementModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addReimbursement, currentUser, projects, clients } = useApp();
   const [category, setCategory] = useState<ReimbursementCategory>('Travel');
-  const [amount, setAmount] = useState<number>(1000);
+  const [amount, setAmount] = useState<number>(0);
   const [description, setDescription] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('UPI / Direct Bank');
   const [projectId, setProjectId] = useState('');
@@ -762,10 +763,10 @@ const EmployeeModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [designationId, setDesignationId] = useState(designations[0]?.id || 'desig-4');
   const [role, setRole] = useState<UserRole>('employee');
   const [workMode, setWorkMode] = useState<WorkMode>('office');
-  const [basic, setBasic] = useState(40000);
-  const [hra, setHra] = useState(16000);
-  const [allowances, setAllowances] = useState(10000);
-  const [deductions, setDeductions] = useState(3000);
+  const [basic, setBasic] = useState(0);
+  const [hra, setHra] = useState(0);
+  const [allowances, setAllowances] = useState(0);
+  const [deductions, setDeductions] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -960,7 +961,7 @@ const LeadModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [phone, setPhone] = useState('+91 ');
   const [phone2, setPhone2] = useState('+91 ');
   const [serviceRequired, setServiceRequired] = useState('Digital Marketing & Outdoor Billboards');
-  const [estimatedValue, setEstimatedValue] = useState<number>(350000);
+  const [estimatedValue, setEstimatedValue] = useState<number>(0);
   const [source, setSource] = useState('Direct Referral');
   const [assignedEmployeeId, setAssignedEmployeeId] = useState(employees[4]?.id || employees[0]?.id);
 
@@ -1207,7 +1208,7 @@ const ProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addProject, clients, employees } = useApp();
   const [name, setName] = useState('');
   const [clientId, setClientId] = useState(clients[0]?.id || '');
-  const [budget, setBudget] = useState(750000);
+  const [budget, setBudget] = useState(0);
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date(Date.now() + 60 * 86400000).toISOString().split('T')[0]);
   const [description, setDescription] = useState('');
@@ -1232,7 +1233,7 @@ const ProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <ModalWrapper title="+ Create Strategic Agency Project (Prompt #37)" onClose={onClose}>
+    <ModalWrapper title="+ Create Strategic Agency Project" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
           <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Project Name *</label>
@@ -1337,7 +1338,7 @@ const TaskModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <ModalWrapper title="+ Create Deliverable Task (Prompt #38)" onClose={onClose}>
+    <ModalWrapper title="+ Create Deliverable Task" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
           <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Select Project *</label>
@@ -1419,7 +1420,7 @@ const InvoiceModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addInvoice, clients } = useApp();
   const [clientId, setClientId] = useState(clients[0]?.id || '');
   const [description, setDescription] = useState('Digital Advertising Campaign Retainer (November 2026)');
-  const [subtotal, setSubtotal] = useState(150000);
+  const [subtotal, setSubtotal] = useState(0);
 
   const tax = Math.round(subtotal * 0.18);
   const total = subtotal + tax;
@@ -1446,7 +1447,7 @@ const InvoiceModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <ModalWrapper title="+ Generate Official Tax Invoice (Prompt #43)" onClose={onClose}>
+    <ModalWrapper title="+ Generate Official Tax Invoice" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
           <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Billed Client *</label>
@@ -1502,7 +1503,7 @@ const QuotationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addQuotation, clients, currentUser } = useApp();
   const [clientId, setClientId] = useState(clients[0]?.id || '');
   const [title, setTitle] = useState('Brand Outdoor Activation & Targeted Lead Campaign');
-  const [subtotal, setSubtotal] = useState(250000);
+  const [subtotal, setSubtotal] = useState(0);
 
   const tax = Math.round(subtotal * 0.18);
   const total = subtotal + tax;
@@ -1533,7 +1534,7 @@ const QuotationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <ModalWrapper title="+ Draft Business Quotation (Prompt #41)" onClose={onClose}>
+    <ModalWrapper title="+ Draft Business Quotation" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
           <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Client *</label>
@@ -1600,7 +1601,7 @@ const PaymentModal: React.FC<{ onClose: () => void; invoiceId?: string }> = ({ o
   };
 
   return (
-    <ModalWrapper title="+ Record Client Inward Payment (Prompt #44)" onClose={onClose}>
+    <ModalWrapper title="+ Record Client Inward Payment" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200 dark:border-emerald-900">
           <p className="font-semibold text-emerald-900 dark:text-emerald-200">
@@ -1660,7 +1661,7 @@ const ExpenseModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { addExpense } = useApp();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Office Supplies');
-  const [amount, setAmount] = useState(2500);
+  const [amount, setAmount] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1676,7 +1677,7 @@ const ExpenseModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <ModalWrapper title="+ Record General Company Expense (Prompt #45)" onClose={onClose}>
+    <ModalWrapper title="+ Record General Company Expense" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
           <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Expense Particulars *</label>

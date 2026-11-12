@@ -1,4 +1,5 @@
-﻿// Field visit GPS: employee consent, captured start/end location, geofence check,
+// AGENCYOS_HUBS_DONE
+// Field visit GPS: employee consent, captured start/end location, geofence check,
 // map links, photos/documents per visit, and visit history.
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
@@ -85,8 +86,8 @@ export const FieldGpsModule: React.FC = () => {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Field Visit GPS</h2>
-        <p className="text-xs text-slate-500">Location is taken only at visit start and end, and only for employees who have given consent.</p>
+        <h2 className="legacy-title text-lg font-bold text-slate-900 dark:text-white">Field Visit GPS</h2>
+        <p className="legacy-title text-xs text-slate-500">Location is taken only at visit start and end, and only for employees who have given consent.</p>
       </div>
       {!myConsent?.granted && (
         <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-xs text-amber-800 dark:text-amber-200 flex flex-wrap items-center gap-3">
@@ -154,7 +155,7 @@ export const FieldGpsModule: React.FC = () => {
           <div className="flex gap-2">
             <button className={btnGood} onClick={() => setConsent(true)}>Allow GPS</button>
             <button className={btnBad} onClick={() => setConsent(false)}>Withdraw consent</button>
-            <button className={btnGhost} onClick={async () => { try { const p = await getPosition(); setMsg(`Test OK: ${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (accuracy ${p.accuracy} m)`); } catch (e) { setMsg((e as Error).message); } }}>Test my location</button>
+            <button className={btnGhost} onClick={async () => { try { const p = await getPosition(); setMsg(`Test OK: ${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (accuracy ${p.accuracy} m)`); } catch (e) { setMsg((e as Error).message); } }}>Check my location</button>
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_BRAND_DOCS
 // AgencyOS v2 Part 3: Quotation desk (addresses, files, revisions, approval, convert),
 // Agreements (clauses, versions, signed copy, renewals), Instalments (schedule, invoice,
@@ -679,8 +680,8 @@ export const DealsModule: React.FC<{ initialTab?: DealsTab }> = ({ initialTab = 
     <DCtx.Provider value={D}>
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Deals, Agreements & Delivery</h2>
-        <p className="text-xs text-slate-500">Quotation revisions and approval, agreements, payment instalments, scope of work and project templates.</p>
+        <h2 className="legacy-title text-lg font-bold text-slate-900 dark:text-white">Deals, Agreements & Delivery</h2>
+        <p className="legacy-title text-xs text-slate-500">Quotation revisions and approval, agreements, payment instalments, scope of work and project templates.</p>
       </div>
       {msg && <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/40 rounded-lg px-3 py-2 flex justify-between"><span>{msg}</span><button className="cursor-pointer" onClick={() => setMsg('')}>x</button></div>}
       <Tabs value={tab} onChange={setTab} tabs={[['quotations', 'Quotations'], ['agreements', 'Agreements'], ['installments', 'Instalments & Receipts'], ['sow', 'Scope of Work'], ['templates', 'Project Templates'], ['settings', 'Settings']]} />

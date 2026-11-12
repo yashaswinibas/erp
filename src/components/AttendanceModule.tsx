@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 import React, { useState, useEffect } from 'react';
 import { useApp, parseTimeToMinutes, calculateTimeDiffHours } from '../context/AppContext';
 import { localDate } from '../lib/dates'; // AGENCYOS_V2_UI
@@ -164,23 +165,17 @@ export const AttendanceModule: React.FC<{ onOpenRegularizeModal: () => void }> =
       {/* Module Title & Header Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 className="legacy-title text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Attendance & Working Hours Desk</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="legacy-title text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Official Shift: 09:30 AM – 06:30 PM (Grace till 09:45 AM) · Biometric & Login Auto-Sync
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => resetAttendanceShift()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 transition-colors cursor-pointer"
-            title="Reset your attendance check-in/out to test punch in again"
-          >
-            <span>↻ Reset Shift (Test)</span>
-          </button>
+          
           <button
             onClick={exportCSV}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"

@@ -1,3 +1,4 @@
+// AGENCYOS_HUBS_DONE
 // AGENCYOS_OFFER_V2
 // AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
@@ -285,8 +286,8 @@ export const DocumentCenter: React.FC = () => {
     <DC.Provider value={ctx}>
     <div className="space-y-6">
       <div>
-        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Document Center</h2>
-        <p className="text-base text-slate-500 mt-2">Professional templates &amp; document storage</p>
+        <h2 className="legacy-title text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Document Center</h2>
+        <p className="legacy-title text-base text-slate-500 mt-2">Professional templates &amp; document storage</p>
       </div>
       <div className="flex gap-6 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
         {cats.map((c) => <button key={c} onClick={() => setCat(c)} className={`pb-3 px-1 text-sm sm:text-base font-semibold whitespace-nowrap border-b-2 -mb-px cursor-pointer ${cat === c ? 'border-slate-900 dark:border-white text-slate-900 dark:text-white' : 'border-transparent text-slate-500 hover:text-slate-800'}`}>{CAT_LABEL[c]}</button>)}
