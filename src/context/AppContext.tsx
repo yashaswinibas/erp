@@ -1,3 +1,4 @@
+// AGENCYOS_FRESH_START
 // AGENCYOS_V4_P25_DONE
 import { homeTab } from '../lib/rbac'; // AGENCYOS_V2_PART4
 import { osGuard } from '../os/osP25';
@@ -259,92 +260,92 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const [attendance, setAttendance] = useState<AttendanceRecord[]>(() => {
     const saved = localStorage.getItem('paa_attendance');
-    return saved ? JSON.parse(saved) : INITIAL_ATTENDANCE;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [regularizations, setRegularizations] = useState<AttendanceRegularizationRequest[]>(() => {
     const saved = localStorage.getItem('paa_regularizations');
-    return saved ? JSON.parse(saved) : INITIAL_REGULARIZATIONS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [dailyActivities, setDailyActivities] = useState<DailyActivity[]>(() => {
     const saved = localStorage.getItem('paa_daily_activities');
-    return saved ? JSON.parse(saved) : INITIAL_DAILY_ACTIVITIES;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [leads, setLeads] = useState<Lead[]>(() => {
     const saved = localStorage.getItem('paa_leads');
-    return saved ? JSON.parse(saved) : INITIAL_LEADS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [clients, setClients] = useState<Client[]>(() => {
     const saved = localStorage.getItem('paa_clients');
-    return saved ? JSON.parse(saved) : INITIAL_CLIENTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [fieldVisits, setFieldVisits] = useState<FieldVisit[]>(() => {
     const saved = localStorage.getItem('paa_field_visits');
-    return saved ? JSON.parse(saved) : INITIAL_FIELD_VISITS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [reimbursements, setReimbursements] = useState<Reimbursement[]>(() => {
     const saved = localStorage.getItem('paa_reimbursements');
-    return saved ? JSON.parse(saved) : INITIAL_REIMBURSEMENTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem('paa_projects');
-    return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('paa_tasks');
-    return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [quotations, setQuotations] = useState<Quotation[]>(() => {
     const saved = localStorage.getItem('paa_quotations');
-    return saved ? JSON.parse(saved) : INITIAL_QUOTATIONS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [agreements, setAgreements] = useState<Agreement[]>(() => {
     const saved = localStorage.getItem('paa_agreements');
-    return saved ? JSON.parse(saved) : INITIAL_AGREEMENTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [invoices, setInvoices] = useState<Invoice[]>(() => {
     const saved = localStorage.getItem('paa_invoices');
-    return saved ? JSON.parse(saved) : INITIAL_INVOICES;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [payments, setPayments] = useState<Payment[]>(() => {
     const saved = localStorage.getItem('paa_payments');
-    return saved ? JSON.parse(saved) : INITIAL_PAYMENTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [expenses, setExpenses] = useState<Expense[]>(() => {
     const saved = localStorage.getItem('paa_expenses');
-    return saved ? JSON.parse(saved) : INITIAL_EXPENSES;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [payslips, setPayslips] = useState<Payslip[]>(() => {
     const saved = localStorage.getItem('paa_payslips');
-    return saved ? JSON.parse(saved) : INITIAL_PAYSLIPS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
     const saved = localStorage.getItem('paa_notifications');
-    return saved ? JSON.parse(saved) : INITIAL_NOTIFICATIONS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>(() => {
     const saved = localStorage.getItem('paa_audit_logs');
-    return saved ? JSON.parse(saved) : INITIAL_AUDIT_LOGS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>(() => {
     const saved = localStorage.getItem('paa_leave_requests');
-    return saved ? JSON.parse(saved) : INITIAL_LEAVE_REQUESTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [leaveBalances, setLeaveBalances] = useState<LeaveBalance[]>(() => {

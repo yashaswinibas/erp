@@ -1,3 +1,4 @@
+// AGENCYOS_FRESH_START
 // AGENCYOS_V5_P26_DONE
 // AGENCYOS_V4_P25_DONE
 // AGENCYOS_V3_OS: live data used by the OS screens (alerts, approvals, calendar, local records)
@@ -16,7 +17,7 @@ export const useWeekly = () => useShared<WeeklyReport[]>('paa_x_os_weekly', []);
 export const useExpStatus = () => useShared<Record<string, { status: 'Pending' | 'Approved' | 'Rejected'; evidence?: string; by?: string }>>('paa_x_os_exp_status', {});
 export const useFollowLog = () => useShared<Record<string, { next?: string; note?: string; log: { at: string; by: string; note: string }[] }>>('paa_x_os_followups', {});
 export const useLostReasons = () => useShared<Record<string, string>>('paa_x_os_lost', {});
-export const useRecords = <T,>(kind: string, seed: T[] = []) => useShared<T[]>('paa_x_os_rec_' + kind, seed);
+export const useRecords = <T,>(kind: string, seed: T[] = []) => { void seed; return useShared<T[]>('paa_x_os_rec_' + kind, [] as T[]); };
 
 const isManagerish = (r: string) => FULL_ACCESS.includes(r) || ['manager', 'hr', 'operations_manager', 'project_manager', 'team_leader', 'sales_team_leader', 'project_coordinator', 'sales_manager', 'finance'].includes(r);
 
