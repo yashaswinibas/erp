@@ -1,3 +1,4 @@
+// AGENCYOS_VERCEL_FIX
 // AgencyOS server: Express + PostgreSQL. Stores every record of the app in its own table,
 // checks logins (bcrypt), sessions (device / IP) and permissions on the server.
 // Start:  npm run server     (reads DATABASE_URL, JWT_SECRET, PORT from .env)
@@ -9,16 +10,18 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import fs from 'fs';
 
-import D from './defaults.json' with { type: 'json' }; // AGENCYOS_VERCEL
+import { createRequire } from 'module';
+const D = createRequire(import.meta.url)('./defaults.json'); // AGENCYOS_VERCEL
 const M = D.M;
 const PORT = Number(process.env.PORT || 4000);
 const SECRET = process.env.JWT_SECRET || '';
 // AGENCYOS_SERVER_STATUS
 const E = process.env;
 const DB = { host: E.DB_HOST || 'localhost', port: Number(E.DB_PORT || 5432), user: E.DB_USER || 'postgres', password: E.DB_PASSWORD || '', database: E.DB_NAME || 'agencyos' };
-if (!E.DATABASE_URL && !E.DB_PASSWORD) { console.error('Database settings missing in .env (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)'); process.exit(1); }
+const PROBLEMS = [];
+if (!E.DATABASE_URL && !E.DB_PASSWORD) { PROBLEMS.push('DATABASE_URL is missing (Vercel > Settings > Environment Variables, then Redeploy)'); console.error('Database settings missing in .env (DATABASE_URL or DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)'); if (!E.VERCEL) process.exit(1); }
 const STARTED = Date.now();
-if (SECRET.length < 16) { console.error('JWT_SECRET in .env must be at least 16 characters'); process.exit(1); }
+if (SECRET.length < 16) { PROBLEMS.push('JWT_SECRET is missing or shorter than 16 characters'); console.error('JWT_SECRET in .env must be at least 16 characters'); if (!E.VERCEL) process.exit(1); }
 // AGENCYOS_SUPABASE: SSL for cloud databases (DB_SSL=true, or automatic for supabase.com)
 const USE_SSL = /^(1|true|yes|require)$/i.test(E.DB_SSL || '') || /supabase/i.test((E.DATABASE_URL || '') + (E.DB_HOST || ''));
 const SSL = USE_SSL ? { rejectUnauthorized: false } : undefined;
@@ -166,7 +169,7 @@ const ip = (req) => (req.headers['x-forwarded-for'] || req.socket.remoteAddress 
 
 const esc = (x) => String(x ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 async function status() {
-  const out = { server: 'running', port: PORT, startedAt: new Date(STARTED).toLocaleString('en-IN'), uptimeMin: Math.round((Date.now() - STARTED) / 60000), db: { ...dbInfo(), connected: false } };
+  const out = { server: 'running', problems: PROBLEMS, node: process.version, vercel: !!E.VERCEL, settings: { DATABASE_URL: E.DATABASE_URL ? 'set' : 'MISSING', DB_SSL: E.DB_SSL || 'not set', JWT_SECRET: SECRET.length >= 16 ? 'set' : 'MISSING/too short' }, port: PORT, startedAt: new Date(STARTED).toLocaleString('en-IN'), uptimeMin: Math.round((Date.now() - STARTED) / 60000), db: { ...dbInfo(), connected: false } };
   try {
     out.db.version = (await pool.query('SHOW server_version')).rows[0].server_version;
     out.db.size = (await pool.query('SELECT pg_size_pretty(pg_database_size(current_database())) s')).rows[0].s;
