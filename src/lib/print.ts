@@ -1,3 +1,4 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_HR_OFFER
 // AGENCYOS_V2_PART17
 ﻿// Printable documents: opens a clean A4 page and the print dialog,
@@ -21,10 +22,11 @@ th{background:#f1f5f9} .r{text-align:right} .kv{display:grid;grid-template-colum
 @media print{body{padding:0}} @page{size:A4;margin:16mm}`;
 
 function openDoc(title: string, css: string, html: string) {
-  const w = window.open('', '_blank');
-  if (!w) { alert('Please allow pop-ups for this site to print or save PDFs.'); return; }
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>${css}${LH_CSS}</style></head><body class="lh">${wrapLetterhead(html)}<script>window.onload=function(){setTimeout(function(){window.print()},400)}</script></body></html>`);
-  w.document.close();
+  // common company letterhead (same header and footer as all office letters)
+  const scoped = css.replace(/@page\{[^}]*\}/g, '').replace(/@media print\{[^{}]*(\{[^}]*\}[^{}]*)*\}/g, '').replace(/(^|\})\s*body\{[^}]*\}/g, '$1');
+  const fit = '.pb .slip{border:0!important;border-radius:0!important;max-width:none}.pb .slip .top{background:none!important;color:#0f172a!important;padding:0 0 10px!important;border-bottom:2px solid #1B3F8B}.pb .slip .brand{display:none!important}.pb .slip .ttl{text-align:left}.pb .slip .ttl .p,.pb .slip .ttl .n{color:#475569!important}.pb .slip .sec{padding:14px 0!important}.pb .slip .foot{background:none!important;padding:10px 0!important}.pb .lh-gst{text-align:right;font-size:10.5px;color:#475569}';
+  void LH_CSS; void wrapLetterhead;
+  openBrandDoc(title, letterPage('<style>' + scoped + fit + '</style><div><div></div>' + html + '</div>', '', new Date().toISOString().slice(0, 10)), false);
 }
 
 export function printHtml(title: string, c: CompanyConfig, body: string) {

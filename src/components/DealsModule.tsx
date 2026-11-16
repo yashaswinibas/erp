@@ -1,3 +1,4 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_HUBS_DONE
 // AGENCYOS_BRAND_DOCS
 // AgencyOS v2 Part 3: Quotation desk (addresses, files, revisions, approval, convert),
@@ -161,7 +162,7 @@ const QuotationsTab = () => {
   const { openDocument } = useApp();
   return (
   <div className={card}>
-    {quotations.length === 0 ? <Empty text="No quotations yet. Create one from Invoices & Collections." /> : (
+    {quotations.length === 0 ? <Empty text="No quotations yet. Click + Create Quotation above." /> : (
       <div className="overflow-x-auto"><table className="w-full">
         <thead><tr><th className={th}>Quotation</th><th className={th}>Client</th><th className={th}>Total</th><th className={th}>Status</th><th className={th}>Approval</th><th className={th}>Rev.</th><th className={th}>Actions</th></tr></thead>
         <tbody>{quotations.map((q) => {
@@ -684,7 +685,7 @@ export const DealsModule: React.FC<{ initialTab?: DealsTab }> = ({ initialTab = 
         <p className="legacy-title text-xs text-slate-500">Quotation revisions and approval, agreements, payment instalments, scope of work and project templates.</p>
       </div>
       {msg && <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/40 rounded-lg px-3 py-2 flex justify-between"><span>{msg}</span><button className="cursor-pointer" onClick={() => setMsg('')}>x</button></div>}
-      <Tabs value={tab} onChange={setTab} tabs={[['quotations', 'Quotations'], ['agreements', 'Agreements'], ['installments', 'Instalments & Receipts'], ['sow', 'Scope of Work'], ['templates', 'Project Templates'], ['settings', 'Settings']]} />
+      <div className="legacy-title"><Tabs value={tab} onChange={setTab} tabs={[['quotations', 'Quotations'], ['agreements', 'Agreements'], ['installments', 'Instalments & Receipts'], ['sow', 'Scope of Work'], ['templates', 'Project Templates'], ['settings', 'Settings']]} /></div>
       {tab === 'quotations' && <QuotationsTab />}
       {tab === 'agreements' && <AgreementsTab />}
       {tab === 'installments' && <InstallmentsTab />}

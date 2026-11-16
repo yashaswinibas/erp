@@ -1,3 +1,4 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_HUBS_DONE
 // AGENCYOS_DB_DONE
 // AGENCYOS_V5_P26_DONE
@@ -454,7 +455,8 @@ function MainApp() {
           {allowed && activeTab === 'document_center' && <DocumentCenter />}
           {allowed && activeTab === 'business_finance' && <FinanceBook />}
           {allowed && activeTab === 'client_reimbursements' && <ClientReimbursementModule />}
-          {allowed && activeTab.startsWith('deals_') && <DealsModule initialTab={activeTab.slice(6) as DealsTab} />}
+          {allowed && activeTab === 'deals_quotations' && <div className="hub-tabs"><button className="hub-tab active" onClick={() => openAddModal('quotation')}>+ Create Quotation</button></div>}
+          {allowed && activeTab.startsWith('deals_') && <DealsModule key={activeTab} initialTab={activeTab.slice(6) as DealsTab} />}
           {allowed && activeTab === 'field_gps' && <FieldGpsModule />}
           {allowed && activeTab === 'field_force' && (
             <FieldForceModule
@@ -507,6 +509,7 @@ function MainApp() {
           )}
           {allowed && activeTab === 'billing' && (
             <SalesBillingModule
+              only="invoices"
               onOpenCreateQuotationModal={() => openAddModal('quotation')}
               onOpenCreateInvoiceModal={() => openAddModal('invoice')}
               onOpenRecordPaymentModal={(invId) => openAddModal('payment', { invoiceId: invId })}

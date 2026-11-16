@@ -1,3 +1,4 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_V5_P26_DONE
 // AGENCYOS_V4_P25_DONE
 // AGENCYOS_V3_OS: renders the new AgencyOS screens (existing screens are rendered by App.tsx)
@@ -14,7 +15,7 @@ import { renderP26, RECORDS26 } from './OsP26Pages';
 const InvoiceBuilder: React.FC<{ openAddModal: (t: string, d?: any) => void }> = ({ openAddModal }) => {
   const done = useRef(false);
   useEffect(() => { if (!done.current) { done.current = true; openAddModal('invoice'); } }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  return <SalesBillingModule onOpenCreateQuotationModal={() => openAddModal('quotation')} onOpenCreateInvoiceModal={() => openAddModal('invoice')} onOpenRecordPaymentModal={(invId) => openAddModal('payment', { invoiceId: invId })} onOpenAddExpenseModal={() => openAddModal('expense')} />;
+  return <SalesBillingModule only="invoices" onOpenCreateQuotationModal={() => openAddModal('quotation')} onOpenCreateInvoiceModal={() => openAddModal('invoice')} onOpenRecordPaymentModal={(invId) => openAddModal('payment', { invoiceId: invId })} onOpenAddExpenseModal={() => openAddModal('expense')} />;
 };
 
 /** Returns the new screen for this tab, or null if the tab is one of the existing screens. */

@@ -1,3 +1,4 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_HUBS_DONE
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
@@ -20,13 +21,15 @@ interface SalesBillingProps {
   onOpenCreateInvoiceModal: () => void;
   onOpenRecordPaymentModal: (invoiceId?: string) => void;
   onOpenAddExpenseModal: () => void;
+  only?: 'invoices' | 'quotations';
 }
 
 export const SalesBillingModule: React.FC<SalesBillingProps> = ({
   onOpenCreateQuotationModal,
   onOpenCreateInvoiceModal,
   onOpenRecordPaymentModal,
-  onOpenAddExpenseModal
+  onOpenAddExpenseModal,
+  only
 }) => {
   const { 
     quotations, 
@@ -40,7 +43,7 @@ export const SalesBillingModule: React.FC<SalesBillingProps> = ({
     company
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'invoices' | 'quotations' | 'agreements' | 'payments' | 'expenses'>('invoices');
+  const [activeTab, setActiveTab] = useState<'invoices' | 'quotations' | 'agreements' | 'payments' | 'expenses'>(only || 'invoices');
   const [searchQuery, setSearchQuery] = useState('');
 
   const getClient = (clientId: string) => clients.find(c => c.id === clientId);
@@ -64,28 +67,28 @@ export const SalesBillingModule: React.FC<SalesBillingProps> = ({
         <div className="flex items-center flex-wrap gap-2">
           <button
             onClick={onOpenCreateInvoiceModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs cursor-pointer"
+            className={(only === 'quotations' ? 'hidden ' : '') + "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs cursor-pointer"}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>+ Create Invoice</span>
           </button>
           <button
             onClick={onOpenCreateQuotationModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-xs cursor-pointer"
+            className={(only === 'invoices' ? 'hidden ' : '') + "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-xs cursor-pointer"}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>+ Create Quotation</span>
           </button>
           <button
             onClick={() => onOpenRecordPaymentModal()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 dark:bg-slate-800 text-white border border-slate-700 hover:bg-slate-800 cursor-pointer"
+            className={(only === 'quotations' ? 'hidden ' : '') + "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 dark:bg-slate-800 text-white border border-slate-700 hover:bg-slate-800 cursor-pointer"}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>+ Record Payment</span>
           </button>
           <button
             onClick={onOpenAddExpenseModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+            className={(!!only ? 'hidden ' : '') + "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>+ Add Expense</span>
@@ -94,7 +97,7 @@ export const SalesBillingModule: React.FC<SalesBillingProps> = ({
       </div>
 
       {/* Sub-tab Navigation */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className={`flex items-center gap-2 overflow-x-auto pb-1 ${only ? 'hidden' : ''}`}>
         {[
           { id: 'invoices', label: `Invoices (${invoices.length})` },
           { id: 'quotations', label: `Quotations (${quotations.length})` },

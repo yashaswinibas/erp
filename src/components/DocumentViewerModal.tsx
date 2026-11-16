@@ -1,9 +1,11 @@
+// AGENCYOS_SPLIT_DONE
 // AGENCYOS_HUBS_DONE
 // AGENCYOS_BRAND_DOCS
 // AGENCYOS_V2_PART17
 import React, { useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { BrandDocViewer } from './BrandDocViewer';
+import { letterPage, brandDocHtml } from '../lib/brandDocs';
 import { Printer, Download, X, CheckCircle, ShieldCheck, ArrowLeft } from 'lucide-react'; // AGENCYOS_V2_PART7
 
 export const DocumentViewerModal: React.FC = () => {
@@ -26,7 +28,8 @@ export const DocumentViewerModal: React.FC = () => {
     const w = el ? window.open('', '_blank') : null;
     if (!el || !w) { window.print(); return; }
     const css = Array.from(document.querySelectorAll('link[rel="stylesheet"], style')).map((n) => n.tagName === 'LINK' ? `<link rel="stylesheet" href="${(n as HTMLLinkElement).href}">` : n.outerHTML).join('');
-    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${docPreview.title}</title>${css}<style>@page{size:A4;margin:0}html,body{margin:0;background:#fff}body .print-page.lh-page{width:210mm !important;max-width:210mm !important;min-height:295mm;aspect-ratio:auto;padding:44mm 18mm 32mm !important;background-size:210mm 297mm;background-repeat:repeat-y;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>${el.outerHTML}<script>window.onload=function(){var p=document.querySelector('.lh-page'),H=Math.floor(295*96/25.4);if(p&&p.scrollHeight>H){var kids=[].slice.call(p.children),pad=(44+32)*96/25.4,inner=p.scrollHeight-pad,z=Math.max(0.6,(H-pad)/inner);kids.forEach(function(k){k.style.zoom=z});}setTimeout(function(){window.print()},500)}<\/script></body></html>`);
+    const page = letterPage('<div><div></div><div class="vm-body">' + el.innerHTML + '</div></div>', '', new Date().toISOString().slice(0, 10));
+    w.document.write(brandDocHtml(String(docPreview.title), page, false).replace('</head>', css + '<style>.pb .vm-body img{max-width:100%}.pb .vm-body .hidden{display:none}</style></head>').replace('</body>', '<script>window.onload=function(){setTimeout(function(){window.print()},500)}<\/script></body>'));
     w.document.close();
   };
 
