@@ -1,3 +1,4 @@
+// AGENCYOS_ADD_USER_DONE
 // AGENCYOS_HUBS_DONE
 // AGENCYOS_FRESH_START
 // AGENCYOS_V4_P25_DONE
@@ -1313,7 +1314,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const addEmployee = (empData: Omit<Employee, 'id'>) => {
     const newEmp: Employee = {
       ...empData,
-      id: `emp-${Date.now()}`
+      id: (empData as any).id || `emp-${Date.now()}`
     };
     setEmployees(prev => [newEmp, ...prev]);
     addAuditLog('EMPLOYEE_ONBOARDED', newEmp.employeeId, `Onboarded ${newEmp.name} to ${newEmp.departmentId}`);
@@ -1328,7 +1329,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const addDepartment = (dept: Omit<Department, 'id'>) => {
     const newDept: Department = {
       ...dept,
-      id: `dept-${Date.now()}`
+      id: (dept as any).id || `dept-${Date.now()}`
     };
     setDepartments(prev => [...prev, newDept]);
     addAuditLog('DEPARTMENT_CREATED', newDept.code, `Department ${newDept.name} created.`);
@@ -1337,7 +1338,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const addDesignation = (desig: Omit<Designation, 'id'>) => {
     const newDesig: Designation = {
       ...desig,
-      id: `desig-${Date.now()}`
+      id: (desig as any).id || `desig-${Date.now()}`
     };
     setDesignations(prev => [...prev, newDesig]);
     addAuditLog('DESIGNATION_CREATED', newDesig.title, `Designation created: ${newDesig.title}`);

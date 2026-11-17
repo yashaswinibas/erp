@@ -1,3 +1,4 @@
+// AGENCYOS_ADD_USER_DONE
 // AGENCYOS_DB_DONE
 // Users & Login: change password, roles, password resets, deactivate users, login history, permission matrix.
 import { OS_ROLES } from '../os/osConfig';
@@ -8,6 +9,7 @@ import { PERM_KEY, LOCKED_TABS, defaultAccess, effectiveAccess } from '../lib/rb
 import { dbEnabled, dbChangePassword } from '../lib/dbSync';
 import { can, ROLE_LABEL, TAB_ACCESS, DEFAULT_PASSWORD, hashPassword, Credential, LoginEvent, ResetRequest, CRED_KEY, LOGIN_LOG_KEY, RESET_KEY } from '../lib/rbac';
 import { useShared, nowStamp } from '../lib/sharedStore';
+import { AddUserPanel } from './AddUserPanel';
 import { inputCls, btnPrimary, btnGhost, btnGood, btnBad, card, th, td, Badge, Field, Tabs, Empty, Modal } from './ui2';
 
 const ROLES: UserRole[] = OS_ROLES.map((r) => r.id as UserRole); // AGENCYOS_V3_OS
@@ -97,8 +99,8 @@ export const AccessAdmin: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div><h2 className="text-lg font-bold text-slate-900 dark:text-white">Users & Login</h2>
-        <p className="text-xs text-slate-500">Logged in as {currentUser.name} ({ROLE_LABEL[currentRole] || currentRole}).</p></div>
+      <div><h2 className="legacy-title text-lg font-bold text-slate-900 dark:text-white">Users & Login</h2>
+        <p className="legacy-title text-xs text-slate-500">Logged in as {currentUser.name} ({ROLE_LABEL[currentRole] || currentRole}).</p></div>
       {msg && <div className="text-xs font-semibold text-blue-700 bg-blue-50 dark:bg-blue-950/40 dark:text-blue-300 rounded-lg px-3 py-2 flex justify-between"><span>{msg}</span><button className="cursor-pointer" onClick={() => setMsg('')}>x</button></div>}
       <Tabs tabs={tabs} value={tab} onChange={setTab} />
 
@@ -106,6 +108,7 @@ export const AccessAdmin: React.FC = () => {
 
       {tab === 'users' && resetter && (
         <div className={card}>
+          <AddUserPanel onDone={setMsg} />
           <input className={`${inputCls} max-w-xs mb-3`} placeholder="Search name / ID / email" value={q} onChange={(e) => setQ(e.target.value)} />
           <div className="overflow-x-auto"><table className="w-full">
             <thead><tr><th className={th}>Employee</th><th className={th}>Login</th><th className={th}>Role</th><th className={th}>Status</th><th className={th}>Password</th><th className={th}>Last login</th><th className={th}>Actions</th></tr></thead>
